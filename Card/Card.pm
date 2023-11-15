@@ -28,7 +28,7 @@
 #
 ###############################################################################
 
-# $Id: Card.pm,v 1.12 2003/05/25 20:29:48 rousseau Exp $
+# $Id: Card.pm,v 1.20 2004/08/06 13:47:56 rousseau Exp $
 
 package Chipcard::PCSC::Card;
 
@@ -50,7 +50,7 @@ our $VERSION = '0.02';
 #
 # default values:
 #  $share_mode = $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE
-#  $prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0
+#  $prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1
 sub new
 {
 	my $class = shift;
@@ -74,7 +74,7 @@ sub new
 	{
 		# Apply default values when required
 		$share_mode = $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE unless (defined($share_mode));
-		$prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 unless (defined ($prefered_protocol));
+		$prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1 unless (defined ($prefered_protocol));
 
 		($container->{hCard}, $container->{dwProtocol}) = Chipcard::PCSC::_Connect ($hContext->{hContext}, $reader_name, $share_mode, $prefered_protocol);
 		return (undef) unless (defined $container->{hCard});
@@ -90,8 +90,8 @@ sub new
 # Connect ($reader_name, $share_mode, $prefered_protocol)
 #
 # default values:
-# $share_mode = $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE
-# $prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0
+#  $share_mode = $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE
+#  $prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1
 sub Connect
 {
 	my $self = shift;
@@ -114,7 +114,7 @@ sub Connect
 
 	# Apply default values when required
 	$share_mode = $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE unless (defined($share_mode));
-	$prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 unless (defined ($prefered_protocol));
+	$prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1 unless (defined ($prefered_protocol));
 
 	($self->{hCard}, $self->{dwProtocol}) = Chipcard::PCSC::_Connect ($self->{hContext}{hContext}, $reader_name, $share_mode, $prefered_protocol);
 
@@ -127,9 +127,9 @@ sub Connect
 # Reconnect ($share_mode, $prefered_protocol, $initialization)
 #
 # default values:
-# $share_mode = $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE
-# $prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0
-# $initialization = $Chipcard::PCSC::SCARD_LEAVE_CARD
+#  $share_mode = $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE
+#  $prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1
+#  $initialization = $Chipcard::PCSC::SCARD_LEAVE_CARD
 sub Reconnect
 {
 	my $self = shift;
@@ -149,7 +149,7 @@ sub Reconnect
 
 	# Apply default values when required
 	$share_mode = $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE unless (defined($share_mode));
-	$prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 unless (defined ($prefered_protocol));
+	$prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1 unless (defined ($prefered_protocol));
 	$initialization = $Chipcard::PCSC::SCARD_LEAVE_CARD unless (defined($initialization));
 
 	$self->{dwProtocol} = Chipcard::PCSC::_Reconnect ($self->{hCard}, $share_mode, $prefered_protocol, $initialization);
@@ -197,6 +197,7 @@ sub Transmit
 	my $ret;
 
 	confess ("not connected") unless defined $self->{hCard};
+	return (undef) unless defined $self->{dwProtocol};
 
 	# the APDU is at least 4 bytes (CLA, INS, P1, P2)
 	warn ("Transmit: short APDU ($#$send_data bytes sent)") unless $#$send_data >= 3;
@@ -214,6 +215,19 @@ sub Transmit
 	# else error
 	return (undef)
 } # Transmit
+
+sub Control
+{
+	my $self = shift;
+	confess ("wrong type") unless ref $self;
+
+	my $controlcode = shift;
+	my $send_data = shift;
+
+	confess ("not connected") unless defined $self->{hCard};
+
+	return Chipcard::PCSC::_Control ($self->{hCard}, $controlcode, $send_data);
+} # Control
 
 sub BeginTransaction
 {
@@ -271,6 +285,8 @@ sub ISO7816Error($)
 	# default error message
 	my $text = "Error not defined by ISO 7816";
 
+	return "wrong SW size for: $sw" unless (length($sw) == 5);
+
 	# split the two error bytes
 	my ($sw1, $sw2) = split / /, $sw;
 
@@ -289,7 +305,7 @@ sub ISO7816Error($)
 	if ($sw1 =~ m/63/)
 	{
 		$text = "State of non-volatile memory changed. ";
-		$text .= "No informatin given." if ($sw2 =~ m/00/);
+		$text .= "No information given." if ($sw2 =~ m/00/);
 		$text .= "File filled up by the last write." if ($sw2 =~ m/81/);
 		$text .= "Counter: 0x" . substr($sw2, 1, 1) if ($sw2 =~ m/^C/);
 	}
@@ -359,7 +375,7 @@ $Chipcard::PCSC::Card::Error = "";
 # die "Error: $Chipcard::PCSC::Card::Error\n" unless defined $sw;
 #
 # Example:
-# ($sw, $res) = TransmitWithCheck("00 A4 01 00 02 01 00", "90 [1,0]0");
+# ($sw, $res) = TransmitWithCheck("00 A4 01 00 02 01 00", "90 [10]0");
 sub TransmitWithCheck
 {
 	my $self = shift;
@@ -371,6 +387,8 @@ sub TransmitWithCheck
 
 	my ($send, $recv, $data, $sw);
 
+	# add needed spaces
+	$command =~ s/(..)/$1 /g if ($command !~ m/ /);
 	print "=> $command\n" if (defined $debug);
 
 	# Convert $command in a reference to an array

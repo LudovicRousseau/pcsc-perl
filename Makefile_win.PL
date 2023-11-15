@@ -5,8 +5,7 @@ WriteMakefile(
     'NAME'      => 'Chipcard::PCSC',
     'VERSION_FROM' => 'PCSC.pm', # finds $VERSION
     'LIBS'      => [''],   # e.g., '-lm'
-    'DEFINE'    => '-O2 -Wall',     # e.g., '-DHAVE_SOMETHING'
-    'INC'       => '`pkg-config --cflags libpcsclite`',     # e.g., '-I/usr/include/other'
+    'INC'       => '-I/usr/local/pcsc/include',     # e.g., '-I/usr/include/other'
 	'PL_FILES'  => {},
 );
 

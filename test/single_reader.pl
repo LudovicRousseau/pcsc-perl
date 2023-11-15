@@ -17,19 +17,7 @@
 #    along with this program; if not, write to the free software
 #    foundation, inc., 59 temple place, suite 330, boston, ma  02111-1307  usa
 
-# $Id: single_reader.pl,v 1.7 2003/05/06 21:23:32 rousseau Exp $
-
-# $Log: single_reader.pl,v $
-# Revision 1.7  2003/05/06 21:23:32  rousseau
-# naming scheme migration from PCSC to Chipcard::PCSC
-#
-# Revision 1.6  2001/09/05 07:58:41  rousseau
-# Added -w flag to #!/usr/bin/perl and corrected some warnings
-#
-# Revision 1.5  2001/09/05 07:55:49  rousseau
-# Added CVS Id and Log fields
-# Added GPL licence
-#
+# $Id: single_reader.pl,v 1.10 2004/05/30 20:10:15 rousseau Exp $
 
 use ExtUtils::testlib;
 use Chipcard::PCSC;
@@ -125,6 +113,27 @@ foreach $tmpVal (@{$RecvData}) {
 } print "\n";
 print '.'x40 . " OK\n";
 # sleep (3);
+
+#-------------------------------------------------------------------------------
+# This test is commented since it is reader/driver specific and may do bad
+# things for another reader. Reader your reader and driver
+# specifications to know what data to use.
+#
+#print "Control:\n";
+#$SendData = [ 0x02 ];
+#$RecvData = $hCard->Control(0x42000001, $SendData);
+#die ("Can't Control: $Chipcard::PCSC::errno") unless (defined ($RecvData));
+#
+#print "  Send = ";
+#foreach $tmpVal (@{$SendData}) {
+#	printf ("%02X ", $tmpVal);
+#} print "\n";
+#
+#print "  Recv = ";
+#foreach $tmpVal (@{$RecvData}) {
+#	printf ("%02X ", $tmpVal);
+#} print "\n";
+#print '.'x40 . " OK\n";
 
 #-------------------------------------------------------------------------------
 print "Disconnecting the card:\n";

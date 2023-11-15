@@ -11,6 +11,18 @@ Chipcard::PCSC::Card - Smarcard communication library
 
  $hCard->Disconnect($Chipcard::PCSC::SCARD_LEAVE_CARD);
 
+ $hCard->Status();
+
+ $hCard->BeginTransaction();
+
+ $hCard->EndTransaction();
+
+ $hCard->TransmitWithCheck($apdu, $sw_expected [, $debug]);
+
+ $hCard->Control($control_code, \@data);
+
+ ISO7816Error($sw);
+
 =head1 DESCRIPTION
 
 The C<Chipcard::PCSC::Card> module implements the
@@ -20,7 +32,7 @@ to a PCSC object that drives the reader.
 
 For more information about PC/SC please read the F<pcscd(1)> man page.
 
-A C<Chipcard::PCSC::Card> object uses the following propoerty:
+A C<Chipcard::PCSC::Card> object uses the following property:
 
 =over 4
 
@@ -141,8 +153,10 @@ raw protocol
 
 This method is equivalent to:
 
- $hCard = new Chipcard::PCSC::Card ($hContext, $reader_name, $share_mode,
- 	$Chipcard::PCSC::SCARD_PROTOCOL_T0);
+ $hCard = new Chipcard::PCSC::Card ($hContext, $reader_name,
+    $share_mode,
+    $Chipcard::PCSC::SCARD_PROTOCOL_T0 |
+    $Chipcard::PCSC::SCARD_PROTOCOL_T1);
 
 =item *
  B<$hCard = new Chipcard::PCSC::Card ($hContext, $reader_name);>
@@ -150,7 +164,9 @@ This method is equivalent to:
 This method is equivalent to:
 
  $hCard = new Chipcard::PCSC::Card ($hContext, $reader_name,
- 	$Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE, $Chipcard::PCSC::SCARD_PROTOCOL_T0);
+    $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE,
+    $Chipcard::PCSC::SCARD_PROTOCOL_T0 |
+    $Chipcard::PCSC::SCARD_PROTOCOL_T1);
 
 =back
 
@@ -268,7 +284,8 @@ raw protocol
 This method is equivalent to:
 
  $hCard->Connect($reader_name, $share_mode,
- 	$Chipcard::PCSC::SCARD_PROTOCOL_T0);
+    $Chipcard::PCSC::SCARD_PROTOCOL_T0 |
+    $Chipcard::PCSC::SCARD_PROTOCOL_T1);
 
 =head2
  $hCard-E<gt>Connect($reader_name);
@@ -276,7 +293,8 @@ This method is equivalent to:
 This method is equivalent to:
 
  $hCard->Connect($reader_name, $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE,
- 	$Chipcard::PCSC::SCARD_PROTOCOL_T0);
+    $Chipcard::PCSC::SCARD_PROTOCOL_T0 |
+    $Chipcard::PCSC::SCARD_PROTOCOL_T1);
 
 =head2
  $hCard-E<gt>Reconnect($share_mode, $prefered_protocol, $initialization);
@@ -402,7 +420,7 @@ eject on close
 This method is equivalent to:
 
  $hCard->Reconnect($share_mode, $prefered_protocol,
- 	$Chipcard::PCSC::SCARD_LEAVE_CARD);
+    $Chipcard::PCSC::SCARD_LEAVE_CARD);
 
 =head2
  $hCard-E<gt>Reconnect($share_mode);
@@ -410,7 +428,9 @@ This method is equivalent to:
 This method is equivalent to:
 
  $hCard->Reconnect($share_mode,
- 	$Chipcard::PCSC::SCARD_PROTOCOL_T0, $Chipcard::PCSC::SCARD_LEAVE_CARD);
+    $Chipcard::PCSC::SCARD_PROTOCOL_T0 |
+    $Chipcard::PCSC::SCARD_PROTOCOL_T1,
+    $Chipcard::PCSC::SCARD_LEAVE_CARD);
 
 =head2
  $hCard-E<gt>Reconnect();
@@ -418,7 +438,9 @@ This method is equivalent to:
 This method is equivalent to:
 
  $hCard->Reconnect($Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE,
- 	$Chipcard::PCSC::SCARD_PROTOCOL_T0, $Chipcard::PCSC::SCARD_LEAVE_CARD);
+    $Chipcard::PCSC::SCARD_PROTOCOL_T0 |
+    $Chipcard::PCSC::SCARD_PROTOCOL_T1,
+    $Chipcard::PCSC::SCARD_LEAVE_CARD);
 
 =head2
  $hCard-E<gt>Disconnect($initialization);
@@ -481,19 +503,21 @@ case, C<$!> should be set with a string describing the error. Upon
 successful completion C<Status> returns an array as follows:
 (C<$reader_name>, C<$reader_state>, C<$protocol>, C<\@atr>)
 
-=head2
+=over 4
+
+=item *
  $reader_name
 
 is a string containing the name of the reader
 
-=head2
+=item *
  $reader_state
 
 is a scalar containing the current state of the reader.
 
 It can be any combination of the following values:
 
-=over 4
+=over 5
 
 =item *
  $Chipcard::PCSC::SCARD_UNKNOWN
@@ -532,12 +556,12 @@ PTS has been set
 
 =back
 
-=head2
+=item *
  $protocol
 
 is the protocol being used. It can be any of the following values:
 
-=over 4
+=over 5
 
 =item *
  $Chipcard::PCSC::SCARD_PROTOCOL_T0,
@@ -550,7 +574,7 @@ is the protocol being used. It can be any of the following values:
 
 =back
 
-=head2
+=item *
  \@atr
 
 is a reference to an array containing the ATR. Each cell of the array
@@ -558,6 +582,8 @@ contains one byte of the ATR. This parameter is however optional as the
 ATR may not be available under some circumstances. For instance when the
 card is not inserted, no ATR can be returned and this parameter will be
 C<undef>.
+
+=back
 
 =head2
  $hCard-E<gt>Transmit(\@data);
@@ -567,10 +593,14 @@ C<Transmit()> is used to exchange data with the card.
 It returns a reference to an anonymous array holding the answer to the
 emitted data. In case of an error, the reference is the C<undef> value.
 
-=head2
+=over 4
+
+=item *
  \@data
 
 is a reference to the data to be sent to the card.
+
+=back
 
 Here is a small sample of how to use C<transmit>:
 
@@ -648,13 +678,13 @@ This method is equivalent to:
 =head2
  $hCard-E<gt>TransmitWithCheck($apdu, $sw_expected [, $debug]);
 
-This method is a wrapper around $hCard-E<gt>TransmitWithCheck(). The
+This method is a wrapper around $hCard-E<gt>Transmit(). The
 $apdu parameter is an ASCII text like "00 A4 01 00 02 01 00",
-$sw_expected is a Perl regular expression like "90 [0,1]0".
+$sw_expected is a Perl regular expression like "90 [01]0".
 
 If the status word returned matches the expression $sw_expected the
 method returns a list ($sw, $recv). $sw is the status word (like "90
-00") of the command, $recv is the data of the command.
+00") of the command, $recv is the result of the command.
 
 If the status word do not match the expression $sw_expected the method
 returns undef and the variable $Chipcard::PCSC::Card::Error is set.
@@ -669,6 +699,19 @@ Example:
  
 
 =head2
+ $hCard-E<gt>Control($control_code, \@data);
+
+This method uses PC/SC SCardControl() to send data specific to the
+reader driver. See your driver documentation to know what data to use.
+
+Example:
+
+ $data = Chipcard::PCSC::ascii_to_array ("01 23 45");
+ $RecvData = $hCard->Control(0x42000001, $SendData);
+ die ("Can't Control data: $Chipcard::PCSC::errno") unless (defined ($RecvData));
+ 
+
+=head2
  ISO7816Error($sw);
 
 This method returns the ASCII text corresponding to the status word $sw
@@ -676,6 +719,7 @@ according to ISO 7816-4 specifications.
 
 Example:
 
+ $sw = "90 00";
  print "$sw: " . &Chipcard::PCSC::Card::ISO7816Error($sw) . "\n";
 
 =head1 SEE ALSO

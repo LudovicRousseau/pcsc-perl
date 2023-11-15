@@ -7,6 +7,7 @@
  *    Description : Perl wrapper to the PCSC API
  *    
  *    Copyright (C) 2001 - Lionel VICTOR
+ *                  2003 - Ludovic ROUSSEAU
  *
  *    This program is free software; you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -25,7 +26,7 @@
  *
  ******************************************************************************/
 
- /* $Id: PCSCperl.h,v 1.5 2003/05/06 21:23:26 rousseau Exp $ */
+ /* $Id: PCSCperl.h,v 1.11 2004/07/04 12:51:24 rousseau Exp $ */
 
 /******************************************************************************
 *    Contains basic definitions for a Perl wrapper to PCSC-lite. The code
@@ -61,15 +62,14 @@
 #ifdef __linux__
 #  include <dlfcn.h>
 #  include <pcsclite.h>
-#  define LOAD_LIB()      dlopen("libpcsclite.so.0", RTLD_LAZY)
+#  define LOAD_LIB()      dlopen("libpcsclite.so.1", RTLD_LAZY)
 #  define CLOSE_LIB(x)    dlclose(x)
 #  define DLL_HANDLE      void*
 #  define GET_FCT         dlsym
 #endif /* LINUX */
 
 #ifdef  __APPLE__
-#include <wintypes.h>
-#include <pcsclite.h>
+#include <PCSC/pcsclite.h>
 #include <CoreFoundation/CFBundle.h>
 #include <CoreFoundation/CFString.h>
 #include <CoreFoundation/CFURL.h>
@@ -132,14 +132,15 @@ void*  GET_FCT(CFBundleRef bundle, char *fct_name)
 /* Definitine fuctions imported from the PCSC library and used by the stub */
 typedef LONG (WINAPI *TSCardEstablishContext) ( DWORD, LPCVOID, LPCVOID, LPSCARDCONTEXT );
 typedef LONG (WINAPI *TSCardReleaseContext)   ( SCARDCONTEXT );
-typedef LONG (WINAPI *TSCardListReaders)      ( SCARDCONTEXT, LPCSTR, LPSTR, LPDWORD );
-typedef LONG (WINAPI *TSCardConnect)          ( SCARDCONTEXT, LPCSTR, DWORD, DWORD, LPSCARDHANDLE, LPDWORD );
+typedef LONG (WINAPI *TSCardListReaders)      ( SCARDCONTEXT, LPCTSTR, LPTSTR, LPDWORD );
+typedef LONG (WINAPI *TSCardConnect)          ( SCARDCONTEXT, LPCTSTR, DWORD, DWORD, LPSCARDHANDLE, LPDWORD );
 typedef LONG (WINAPI *TSCardReconnect)        ( SCARDHANDLE, DWORD, DWORD, DWORD, LPDWORD );  
 typedef LONG (WINAPI *TSCardDisconnect)       ( SCARDHANDLE, DWORD );
 typedef LONG (WINAPI *TSCardBeginTransaction) ( SCARDHANDLE );
 typedef LONG (WINAPI *TSCardEndTransaction)   ( SCARDHANDLE, DWORD );
 typedef LONG (WINAPI *TSCardTransmit)         ( SCARDHANDLE, LPCSCARD_IO_REQUEST, LPCBYTE, DWORD, LPSCARD_IO_REQUEST, LPBYTE, LPDWORD ); 
-typedef LONG (WINAPI *TSCardStatus)           ( SCARDHANDLE, LPSTR, LPDWORD, LPDWORD, LPDWORD, LPBYTE, LPDWORD );
+typedef LONG (WINAPI *TSCardControl)          ( SCARDHANDLE, DWORD, LPCBYTE, DWORD, LPBYTE, DWORD, LPDWORD );
+typedef LONG (WINAPI *TSCardStatus)           ( SCARDHANDLE, LPTSTR, LPDWORD, LPDWORD, LPDWORD, LPBYTE, LPDWORD );
 typedef LONG (WINAPI *TSCardGetStatusChange)  ( SCARDHANDLE, DWORD, LPSCARD_READERSTATE_A, DWORD );
 typedef LONG (WINAPI *TSCardCancel)           ( SCARDCONTEXT );
 typedef LONG (*TSCardSetTimeout)       ( SCARDCONTEXT, DWORD );
@@ -147,7 +148,6 @@ typedef LONG (*TSCardSetTimeout)       ( SCARDCONTEXT, DWORD );
 /* these functions are not used */
 /*
 LONG SCardCancelTransaction( SCARDHANDLE );
-LONG SCardControl( SCARDHANDLE, LPCBYTE, DWORD, LPBYTE, LPDWORD ); 
 LONG SCardListReaderGroups( SCARDCONTEXT, LPSTR, LPDWORD );
 */
 
@@ -166,6 +166,7 @@ static TSCardDisconnect       hDisconnect       = NULL;
 static TSCardBeginTransaction hBeginTransaction = NULL;
 static TSCardEndTransaction   hEndTransaction   = NULL;
 static TSCardTransmit         hTransmit         = NULL;
+static TSCardControl          hControl          = NULL;
 static TSCardStatus           hStatus           = NULL;
 static TSCardGetStatusChange  hGetStatusChange  = NULL;
 static TSCardCancel           hCancel           = NULL;
@@ -178,7 +179,6 @@ static LONG       gnLastError = SCARD_S_SUCCESS;
 /* these functions are not used */
 /*
 TSCardCancelTransaction hCancelTransaction = NULL;
-TSCardControl          hControl          = NULL;
 TSCardListReaderGroups hListReaderGroups = NULL;
 */
 

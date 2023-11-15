@@ -25,7 +25,7 @@
 #
 ###############################################################################
 
-# $Id: PCSC.pm,v 1.12 2003/05/25 20:29:47 rousseau Exp $
+# $Id: PCSC.pm,v 1.14 2004/05/30 20:11:19 rousseau Exp $
 
 package Chipcard::PCSC;
 
@@ -49,7 +49,7 @@ use vars       qw($VERSION @ISA @EXPORT);
 @EXPORT = qw(
 
 );
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 bootstrap Chipcard::PCSC $VERSION;
 
@@ -62,7 +62,10 @@ sub array_to_ascii($)
 	my $byte_array_ref = shift;
 
 	confess ("wrong type") unless ref ($byte_array_ref);
-	confess ('usage Chipcard::PCSC::array_to_ascii($string)') unless defined @{$byte_array_ref};
+	confess ('usage Chipcard::PCSC::array_to_ascii($string)') unless defined $byte_array_ref;
+
+	# return an empty string for an empty list
+	return "" if (! defined @{$byte_array_ref});
 
 	my $return_string;
 	my $tmpVal;

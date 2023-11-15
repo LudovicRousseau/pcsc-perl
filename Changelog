@@ -1,4 +1,117 @@
-2003-05-27  Ludovic Rousseau  <rousseau@ornithorynque>
+2004-08-06  Ludovic Rousseau  <rousseau@acer>
+
+	* README: release 1.4.2
+
+	* PCSC.xs:
+	allow to use SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1 as the protocol
+
+	* Card/Card.pm: typo: informatin -> information
+
+2004-07-04  Ludovic Rousseau  <rousseau@acer>
+
+	* README: release 1.4.1
+
+	* README:
+	use http://pcsclite.alioth.debian.org/ as the pcsc-lite homepage
+
+	* Makefile.PL, PCSCperl.h:
+	back to use pcsclite.h instead of PCSC/pcsclite.h for __linux__ but now
+	use `pkg-config --cflags libpcsclite` at compilation
+
+2004-06-29  Ludovic Rousseau  <rousseau@acer>
+
+	* Card/Card.pm:
+	ISO7816Error(): return an error if given $sw if not 5 chars long "xx xx"
+
+	* Card/Card.pm:
+	return (undef) if the protocol is not defined in Transmit. This happens
+	if you change a T=0 card with a T=1 (or vice versa) and try to exchange
+	an APDU without disconnecting first.
+
+2004-06-25  Ludovic Rousseau  <rousseau@acer>
+
+	* Card/Card.pod: add en empty line
+
+	* PCSCperl.h: - use PCSC/pcsclite.h
+	- replace LPCSTR by LPCTSTR
+
+2004-05-30  Ludovic Rousseau  <rousseau@acer>
+
+	* README: release 1.4.0
+
+	* PCSC.pm: ABI changed so change VERSION number
+
+	* PCSCperl.h: - add support of new SCardControl() API through Control()
+	- now loads libpcsclite.so.1 instead of libpcsclite.so.0
+
+	* Card/Card.pm, Card/Card.pod, PCSC.xs, test.pl, test/single_reader.pl:
+	add support of new SCardControl() API
+
+2004-04-02  Ludovic Rousseau  <rousseau@acer>
+
+	* README: release 1.3.1
+
+	* PCSC.pod: document GetStatusChange()
+
+	* test.pl: add demo code for GetStatusChange()
+
+	* PCSC.xs, PCSCperl.h:
+	use dynamic table and avoid using the deprecated PCSCLITE_MAX_CHANNELS
+
+2004-01-18  Ludovic Rousseau  <rousseau@acer>
+
+	* Card/Card.pm, Card/Card.pod:
+	Use regular expression "90 [10]0" instead of "90 [1,0]0"
+
+	* Card/Card.pm:
+	allow commands to be in the form "00A40100020100" instead of "00 A4 01 00 02 01 00"
+
+2003-12-13  Ludovic Rousseau  <rousseau@acer>
+
+	* README: release 1.3.0
+
+	* Card/Card.pod: add documentation for Control()
+
+	* test.pl:
+	simplify the sample code for Control() since array_to_ascii() now
+	returns an empty string for an empty list
+
+	* PCSC.pm: array_to_ascii() return an empty string for an empty list
+
+	* test.pl, test/single_reader.pl:
+	Comment out the tests for Control since the result is any thing
+	depending on the reader and driver.
+
+2003-12-11  Ludovic Rousseau  <rousseau@acer>
+
+	* PCSC.xs:
+	Windows PCSC has a different behavior and ATR and ReaderName buffers
+	must not be set to NULL. Thanks to Andrew Kay for the patch.
+
+	* MANIFEST: add Makefile_win.PL
+
+	* Card/Card.pm, PCSC.xs, PCSCperl.h, test.pl, test/single_reader.pl:
+	Add support for SCardControl with $out = $hContext->Control (\@in);
+
+2003-12-10  Ludovic Rousseau  <rousseau@acer>
+
+	* Card/Card.pod: some repaging.
+
+	* Card/Card.pod: correct a typo
+
+2003-12-09  Ludovic Rousseau  <rousseau@acer>
+
+	* Card/Card.pm, Card/Card.pod:
+	by default use T=0 | T=1 protocols instead of just T=0
+
+	* PCSC.xs:
+	Initalise ioRecvPci structure in Transmit(). Patch from Troy Curtiss.
+
+	* PCSCperl.h: add #define PCSCLITE_MAX_CHANNELS for Windows plateforms
+
+	* Makefile_win.PL: new file to support Windows platforms
+
+2003-05-27  Ludovic Rousseau  <rousseau@acer>
 
 	* README: release 1.2.2
 
@@ -12,7 +125,7 @@
 
 	* Makefile.PL: add PL_FILES line to avoid problem with Makefile_OSX.PL
 
-2003-05-25  Ludovic Rousseau  <rousseau@ornithorynque>
+2003-05-25  Ludovic Rousseau  <rousseau@acer>
 
 	* README.OSX: addapted comment to the updated Makefile_OSX.PL
 
@@ -24,7 +137,7 @@
 	* PCSC.pm:
 	add constant definition (thanks to Ville Skyttä for report and patch)
 
-2003-05-24  Ludovic Rousseau  <rousseau@ornithorynque>
+2003-05-24  Ludovic Rousseau  <rousseau@acer>
 
 	* README: release 1.2.1
 
@@ -46,7 +159,7 @@
 
 	* Card/Card.pm: Chipcard::PCSC::Utils.pm no longer exists
 
-2003-05-09  Ludovic Rousseau  <rousseau@ornithorynque>
+2003-05-09  Ludovic Rousseau  <rousseau@acer>
 
 	* MANIFEST, Card/Card.pm, Card/Utils.pm: Utils.pm merged into Card.pm
 
@@ -85,28 +198,28 @@
 
 	* Card/Card.pm: some reformating
 
-2003-05-06  Ludovic Rousseau  <rousseau@ornithorynque>
+2003-05-06  Ludovic Rousseau  <rousseau@acer>
 
-	* test/multiple_readers.pl, test/single_reader.pl, t/test.t, examples/gsm_directory.pl, Card/Card.pm, Card/Card.pod, PCSC.pm, PCSCperl.h, test.pl, MANIFEST, Makefile.PL, PCSC.pod, PCSC.xs:
+	* examples/gsm_directory.pl, t/test.t, test/multiple_readers.pl, test/single_reader.pl, Card/Card.pm, Card/Card.pod, MANIFEST, Makefile.PL, PCSC.pm, PCSC.pod, PCSC.xs, PCSCperl.h, test.pl:
 	naming scheme migration from PCSC to Chipcard::PCSC
 
-2002-11-07  Ludovic Rousseau  <rousseau@ornithorynque>
+2002-11-07  Ludovic Rousseau  <rousseau@acer>
 
 	* README: release 1.1.3
 
-2002-08-29  Ludovic Rousseau  <rousseau@ornithorynque>
+2002-08-29  Ludovic Rousseau  <rousseau@acer>
 
 	* PCSC.xs: add a pTHX_ cast to make it work with Perl 5.8
 
 	* PCSC.pm: add prototypes and contants definitions
 
-2002-08-28  Ludovic Rousseau  <rousseau@ornithorynque>
+2002-08-28  Ludovic Rousseau  <rousseau@acer>
 
 	* README: release 1.1.2
 
 	* PCSCperl.h: link against libpcsclite.so.0 instead of libpcsclite.so
 
-2002-05-16  lvictor  <lvictor@ornithorynque>
+2002-05-16  lvictor  <lvictor@acer>
 
 	* PCSC.xs:
 	 Modified error handling to use warn() instead of the more destructive
@@ -117,14 +230,14 @@
 
 	* PCSC.pm: Added support for GetStatusChange and Cancel
 
-2002-03-07  Ludovic Rousseau  <rousseau@ornithorynque>
+2002-03-07  Ludovic Rousseau  <rousseau@acer>
 
 	* README: release 1.1.1
 
 	* Card/Card.pm, Card/Card.pod, PCSC.pod, PCSC.xs: use bold for commands
 	changed -> into -E<gt> (reverse patch :-)
 
-2002-03-06  Ludovic Rousseau  <rousseau@ornithorynque>
+2002-03-06  Ludovic Rousseau  <rousseau@acer>
 
 	* PCSCperl.h: comment unused variable declarations
 
@@ -140,7 +253,7 @@
 
 	* PCSC.xs: correct line wrap in licence text
 
-2002-03-05  Ludovic Rousseau  <rousseau@ornithorynque>
+2002-03-05  Ludovic Rousseau  <rousseau@acer>
 
 	* README.Unix: Release 1.0.9
 
@@ -148,7 +261,7 @@
 
 	* Card/Card.pm: the minium APDU length is 4 bytes and not 5
 
-2001-10-18  Ludovic Rousseau  <rousseau@ornithorynque>
+2001-10-18  Ludovic Rousseau  <rousseau@acer>
 
 	* MANIFEST: added LICENCE
 
@@ -170,12 +283,12 @@
 	compare the files in the directory with MANIFEST to check all the files
 	will be included in the archive
 
-2001-10-17  Ludovic Rousseau  <rousseau@ornithorynque>
+2001-10-17  Ludovic Rousseau  <rousseau@acer>
 
 	* create_distrib.sh:
 	Added checks: directory name format, directory existance
 
-2001-10-16  Ludovic Rousseau  <rousseau@ornithorynque>
+2001-10-16  Ludovic Rousseau  <rousseau@acer>
 
 	* MANIFEST:
 	removed scriptor and gscriptor scripts (moved to pcsc-tools)
@@ -194,28 +307,28 @@
 	* create_distrib.sh:
 	create a nice package without Debian specific stuff and CVS directories
 
-2001-10-10  lvictor  <lvictor@ornithorynque>
+2001-10-10  lvictor  <lvictor@acer>
 
 	* t/test.t: Initial check in
 
 	* PCSC.pm:
 	Added fake variable declarations/initialization to work with make test
 
-2001-09-07  lvictor  <lvictor@ornithorynque>
+2001-09-07  lvictor  <lvictor@acer>
 
 	* examples/gsm_directory.pl: cosmetic chage in the header comment
 
-2001-09-06  Ludovic Rousseau  <rousseau@ornithorynque>
+2001-09-06  Ludovic Rousseau  <rousseau@acer>
 
 	* examples/gsm_directory.pl: added CVS Id and Log fields
 
 	* examples/gsm_directory.pl: typos in comments
 
-2001-09-06  lvictor  <lvictor@ornithorynque>
+2001-09-06  lvictor  <lvictor@acer>
 
 	* examples/gsm_directory.pl: Added a license
 
-2001-09-05  lvictor  <lvictor@ornithorynque>
+2001-09-05  lvictor  <lvictor@acer>
 
 	* examples/gsm.script, examples/gsm_directory.pl:
 	Added some GSM11.11 demo scripts to gscriptor/scriptor as well as a
@@ -226,7 +339,7 @@
 	Do not warn anymore when P3(len) is not related to the number of bytes
 	to be transmitted after the APDU
 
-2001-09-05  Ludovic Rousseau  <rousseau@ornithorynque>
+2001-09-05  Ludovic Rousseau  <rousseau@acer>
 
 	* test/single_reader.pl:
 	Added -w flag to #!/usr/bin/perl and corrected some warnings
@@ -246,7 +359,7 @@
 	* test.pl: Added CVS Log and Id fields
 	Added GPL licence
 
-2001-09-04  lvictor  <lvictor@ornithorynque>
+2001-09-04  lvictor  <lvictor@acer>
 
 	* test/multiple_readers.pl, test/single_reader.pl:
 	Now using the real double typed magical scalar $PCSC::errno to report
@@ -277,7 +390,7 @@
 	array_to_ascii() and ascii_to_array(). Thanks to this contributor for his
 	help and time
 
-2001-07-02  lvictor  <lvictor@ornithorynque>
+2001-07-02  lvictor  <lvictor@acer>
 
 	* PCSC.pod, test.pl:
 	Made minor modifications (corrected some misspelled words in the doc and
@@ -285,7 +398,7 @@
 
 	* examples/readfile.script: Initial checkin
 
-2001-06-12  giraud  <giraud@ornithorynque>
+2001-06-12  giraud  <giraud@acer>
 
 	* README.OSX: Small README about the OS X install.
 
@@ -297,11 +410,11 @@
 
 	* PCSCperl.h: Added support for MacOS X
 
-2001-05-31  Ludovic Rousseau  <rousseau@ornithorynque>
+2001-05-31  Ludovic Rousseau  <rousseau@acer>
 
 	* Card/Card.pm, PCSC.pm: added hash-bang
 
-2001-05-31  lvictor  <lvictor@ornithorynque>
+2001-05-31  lvictor  <lvictor@acer>
 
 	* Card/Card.pm, Card/Card.pod, Makefile.PL, PCSC.pm, PCSC.pod, PCSC.xs, PCSCperl.h, remarks.txt, test.pl, test/multiple_readers.pl, test/single_reader.pl, typemap:
 	Initial import

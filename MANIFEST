@@ -8,6 +8,7 @@ examples/test_iso_error.pl
 LICENCE
 Makefile_OSX.PL
 Makefile.PL
+Makefile_win.PL
 MANIFEST
 PCSCperl.h
 PCSC.pm

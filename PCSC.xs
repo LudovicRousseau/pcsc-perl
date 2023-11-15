@@ -7,7 +7,7 @@
  *
  *    Description : Perl wrapper to the PCSC API
  *    
- *    Copyright (C) 2001 - Lionel VICTOR, 2003 Ludovic ROUSSEAU
+ *    Copyright (C) 2001 - Lionel VICTOR, 2003-2004 Ludovic ROUSSEAU
  *
  *    This program is free software; you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
  *
  ******************************************************************************/
 
- /* $Id: PCSC.xs,v 1.8 2003/05/06 21:23:25 rousseau Exp $ */
+ /* $Id: PCSC.xs,v 1.14 2004/08/06 15:22:41 rousseau Exp $ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -377,6 +377,7 @@ _LoadPCSCLibrary ()
 			hBeginTransaction = (TSCardBeginTransaction) GET_FCT (ghDll, "SCardBeginTransaction");
 			hEndTransaction   = (TSCardEndTransaction)   GET_FCT (ghDll, "SCardEndTransaction");
 			hTransmit         = (TSCardTransmit)         GET_FCT (ghDll, "SCardTransmit");
+			hControl          = (TSCardControl)          GET_FCT (ghDll, "SCardControl");
 			hCancel           = (TSCardCancel)           GET_FCT (ghDll, "SCardCancel");
 #ifdef WIN32
 			hListReaders      = (TSCardListReaders)      GET_FCT (ghDll, "SCardListReadersA");
@@ -397,7 +398,7 @@ _LoadPCSCLibrary ()
 #endif
 				!hEstablishContext || !hReleaseContext || !hListReaders || !hConnect ||
 				!hReconnect || ! hDisconnect || !hBeginTransaction || !hEndTransaction ||
-				!hTransmit || !hStatus || !hGetStatusChange || !hCancel)
+				!hTransmit || !hStatus || !hGetStatusChange || !hCancel || !hControl)
 			{
 				RETVAL = FALSE;
 				croak ("PCSC library does not contain all the required symbols");
@@ -676,12 +677,21 @@ _Status (hCard)
 	long hCard
 	PREINIT:
 		int            nCount = 0;
+#ifdef WIN32
+		char           tmpReaderName[200];
+		char*          szReaderName = tmpReaderName;
+		unsigned long  cchReaderLen = sizeof(tmpReaderName);
+		char           tmpAtr[MAX_ATR_SIZE];
+		unsigned char* pbAtr = tmpAtr;
+		unsigned long  cbAtrLen = sizeof(tmpAtr);
+#else
 		char*          szReaderName = NULL;
 		unsigned long  cchReaderLen = 0;
-		unsigned long  dwState = 0;
-		unsigned long  dwProtocol = 0;
 		unsigned char* pbAtr = NULL;
 		unsigned long  cbAtrLen = 0;
+#endif
+		unsigned long  dwState = 0;
+		unsigned long  dwProtocol = 0;
 		AV*            aATR = 0;
 	PPCODE:
 		/* We call the function with a null cchReaderLen : this should
@@ -837,17 +847,20 @@ _Transmit (hCard, dwProtocol, psvSendData)
 		switch (dwProtocol) {
 		case SCARD_PROTOCOL_T0:
 		case SCARD_PROTOCOL_T1:
+		case SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1:
 		case SCARD_PROTOCOL_RAW:
 			ioSendPci.dwProtocol  = dwProtocol;
 			ioSendPci.cbPciLength = sizeof(ioSendPci);
+			ioRecvPci.dwProtocol  = dwProtocol;
+			ioRecvPci.cbPciLength = sizeof(ioRecvPci);
 			break;
 		default:
 			/* If $dwProtocol holds an invalid value, we exist reporting
 			 * the error SCARD_E_INVALID_VALUE.
 			 */
 			gnLastError = SCARD_E_INVALID_VALUE;
-			warn ("unknown protocol given at %s line %d\n\t",
-			      __FILE__, __LINE__);
+			warn ("unknown protocol %d given at %s line %d\n\t",
+			      dwProtocol, __FILE__, __LINE__);
 			XSRETURN_UNDEF;
 		}
 
@@ -898,6 +911,100 @@ _Transmit (hCard, dwProtocol, psvSendData)
 
 		/* Do not forget to free the dynamically allocated buffer */
 		Safefree (pbSendBuffer);
+
+#///////////////////////////////////////////////////////////////////////////////
+#//   Control ()
+#//
+#// INPUT :
+#// - $hCard
+#// - $dwControlCode
+#// - @inBuffer = (\@BytesToSend)
+#// @BytesToSend contains the bytes to transmit
+#//
+#// OUTPUT :
+#// - @outBuffer = (\@BytesRead)
+#// - @BytesRead contains the returned bytes
+#// Control can return the 'undef' value alone if an error occurs.
+SV*
+_Control (hCard, dwControlCode, psvSendData)
+	unsigned long hCard;
+	unsigned long dwControlCode;
+	SV*           psvSendData;
+	PREINIT:
+		int                        nCount = 0;
+		static unsigned char*      pbSendBuffer = NULL;
+		static unsigned char       pbRecvBuffer [MAX_BUFFER_SIZE];
+		unsigned long              cbSendLength = 0;
+		unsigned long              cbRecvLength = sizeof (pbRecvBuffer);
+		AV*                        aRecvBuffer = NULL;
+	PPCODE:
+		/* We make sure that the array is sane */
+		if (psvSendData == NULL) {
+			gnLastError = SCARD_E_INVALID_PARAMETER;
+			warn ("psvSendData is a NULL pointer at %s line %d\n\t",
+			      __FILE__, __LINE__);
+			XSRETURN_UNDEF;
+		}
+
+		/* Should the second parameter not be a reference, we return the
+		 * SCARD_E_INVALID_PARAMETER error code.
+		 */
+		if ((!SvROK(psvSendData))||(SvTYPE(SvRV(psvSendData)) != SVt_PVAV)) {
+			gnLastError = SCARD_E_INVALID_PARAMETER;
+			warn ("psvSendData is not a RVAV at %s line %d\n\t",
+			      __FILE__, __LINE__);
+			XSRETURN_UNDEF;
+		}
+
+		/* Let's allocate some space for the send buffer, if needed */
+		cbSendLength = av_len((AV*)SvRV(psvSendData)) + 1;
+		if (cbSendLength <= 0) {
+			gnLastError = SCARD_E_INVALID_VALUE;
+			warn ("empty array given at %s line %d\n\t",
+				  __FILE__, __LINE__);
+			XSRETURN_UNDEF;
+		}
+		New (2018, pbSendBuffer, cbSendLength, char);
+		if (pbSendBuffer == NULL) {
+			gnLastError = SCARD_E_NO_MEMORY;
+			warn ("Could not allocate buffer at %s line %d\n\t",
+				  __FILE__, __LINE__);
+			XSRETURN_UNDEF;
+		}
+
+		for (nCount = 0; nCount < cbSendLength ; nCount++)
+			pbSendBuffer[nCount] = (char)SvIV(*av_fetch((AV*)SvRV(psvSendData), nCount, 0));
+
+		/* Everything is ready : call the real function... */
+		gnLastError = hControl (hCard, dwControlCode,
+			(cbSendLength > 0 ? pbSendBuffer : NULL), cbSendLength, 
+			pbRecvBuffer, sizeof(pbRecvBuffer), &cbRecvLength);
+
+		if (gnLastError != SCARD_S_SUCCESS) {
+			/* Free the buffer if something went wrong */
+			Safefree (pbSendBuffer);
+			XSRETURN_UNDEF;
+		}
+
+		/* At this point, the command was successful. We still need to
+		 * return all the values from our buffer...
+		 */
+		aRecvBuffer = (AV*) sv_2mortal((SV*)newAV());
+
+		/* we fill this array with every byte from the Response
+		 * note that we do not make this data mortal because av_push()
+		 * does not increment the reference count. See the note in the
+		 * function header above
+		 */
+		for (nCount = 0; nCount < cbRecvLength; nCount++)
+ 			av_push (aRecvBuffer, newSViv(pbRecvBuffer[nCount]));
+
+		// XPUSHs (sv_2mortal(newSViv(ioRecvPci.dwProtocol)));
+		XPUSHs (sv_2mortal(newRV((SV*)aRecvBuffer)));
+
+		/* Do not forget to free the dynamically allocated buffer */
+		Safefree (pbSendBuffer);
+
 
 #///////////////////////////////////////////////////////////////////////////////
 #//   BeginTransaction ()
@@ -964,10 +1071,7 @@ _GetStatusChange (hContext, dwTimeout, psvReaderStates)
 	unsigned long dwTimeout;
 	SV*           psvReaderStates;
 	PREINIT:
-		// We use a static vector to avoid malloc/free problems with
-		// multiple threads and calls to SCardCancel...
-		// TODO: enhance this
-		static SCARD_READERSTATE_A rgReaderStates_t[PCSCLITE_MAX_CHANNELS];
+		static SCARD_READERSTATE_A *rgReaderStates_t = NULL;
 		unsigned int               nCount = 0;
 		unsigned int               nATRCount = 0;
 		unsigned int               nReaders = 0;
@@ -993,6 +1097,19 @@ _GetStatusChange (hContext, dwTimeout, psvReaderStates)
 
 		/* Get the total number of elements in our array */
 		nReaders = av_len((AV*)SvRV(psvReaderStates)) + 1;
+		
+		/* free the memory allocated during previous call to GetStatusChange */
+		if (rgReaderStates_t)
+			Safefree(rgReaderStates_t);
+
+		/* allocate the Reader States table */
+		Newz(2018, rgReaderStates_t, nReaders, SCARD_READERSTATE_A);
+		if (rgReaderStates_t == NULL)
+		{
+			warn ("Could not allocate buffer at %s line %d\n\t",
+				__FILE__, __LINE__);
+			XSRETURN_NO;
+		}
 
 		for (nCount = 0; nCount < nReaders; nCount++) {
 			/* As long as psvReaderStates is a reference to a PVAV we

@@ -10,6 +10,8 @@ Chipcard::PCSC - Smarcard reader interface library
 
  $hContext->SetTimeout($timeout);
 
+ $hContext->GetStatusChange(\@readers_states, $timeout);
+
  $apdu = Chipcard::PCSC::array_to_ascii(@apdu);
 
  @apdu = Chipcard::PCSC::ascii_to_array($apdu);
@@ -119,10 +121,37 @@ L<ListReaders>:
  print @ReadersList . "\n";
 
 =item *
+ B<$hContext-E<gt>GetStatusChange(\@readers_states, $timeout);>
+
+The method C<$hContext-E<gt>GetStatusChange(\@readers_states, $timeout)>
+uses a reference to a list of hashs. 
+
+ # create the list or readers to watch
+ map { push @readers_states, ({'reader_name'=>"$_"}) } @ReadersList;
+
+ @StatusResult = $hContext->GetStatusChange(\@readers_states);
+
+The keys of the hash are: 'reader_name', 'current_state', 'event_state'
+and 'ATR'.
+
+To detect a status change you have to first get the status and then copy
+the 'event_state' in the 'current_state'. The method will return when
+both states are different or a timeout occurs.
+
+=item *
+ B<$hContext-E<gt>GetStatusChange(\@readers_states);>
+
+This method is equivalent to:
+
+ $hContext->GetStatusChange(\@readers_states, 0xFFFFFFFF);
+
+The timeout is set to infinite.
+
+=item *
  B<$apdu_ref = Chipcard::PCSC::ascii_to_array($apdu);>
 
-The method L<Chipcard::PCSC::Card::Transmit> uses references to arrays
-as in and out parameters. The L<Chipcard::PCSC::ascii_to_array> is used
+The method C<Chipcard::PCSC::Card::Transmit()> uses references to arrays
+as in and out parameters. The C<Chipcard::PCSC::ascii_to_array()> is used
 to transform an APDU in ASCII format to a reference to an array in the
 good format.
 
@@ -134,7 +163,7 @@ Example:
  B<$apdu = Chipcard::PCSC::array_to_ascii($apdu_ref);>
 
 This method is used to convert the result of a
-L<Chipcard::PCSC::Card::Transmit> into ASCII format.
+C<Chipcard::PCSC::Card::Transmit()> into ASCII format.
 
 Example:
 
@@ -238,7 +267,7 @@ communicate with a reader and the smart card inside it.
 
 =head1 COPYRIGHT
 
-(C) Lionel VICTOR & Ludovic ROUSSEAU, 2001-2003, GNU GPL
+(C) Lionel VICTOR & Ludovic ROUSSEAU, 2001-2004, GNU GPL
 
 =head1 AUTHORS / ACKNOWLEDGEMENT
 
