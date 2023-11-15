@@ -26,7 +26,7 @@
  *
  ******************************************************************************/
 
- /* $Id: PCSC.xs,v 1.17 2006-05-30 20:35:25 rousseau Exp $ */
+ /* $Id: PCSC.xs,v 1.19 2007-03-02 15:12:48 rousseau Exp $ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -129,16 +129,6 @@ void _InitErrorCodes () {
 
 	tmpSV = perl_get_sv ("Chipcard::PCSC::SCARD_E_UNSUPPORTED_FEATURE", TRUE);
 	sv_setiv (tmpSV,      SCARD_E_UNSUPPORTED_FEATURE); SvREADONLY_on (tmpSV);
-	tmpSV = perl_get_sv ("Chipcard::PCSC::SCARD_W_INSERTED_CARD", TRUE);
-	sv_setiv (tmpSV,      SCARD_W_INSERTED_CARD); SvREADONLY_on (tmpSV);
-	tmpSV = perl_get_sv ("Chipcard::PCSC::SCARD_SCOPE_GLOBAL", TRUE);
-	sv_setiv (tmpSV,      SCARD_SCOPE_GLOBAL); SvREADONLY_on (tmpSV);
-	tmpSV = perl_get_sv ("Chipcard::PCSC::SCARD_RESET", TRUE);
-	sv_setiv (tmpSV,      SCARD_RESET); SvREADONLY_on (tmpSV);
-	tmpSV = perl_get_sv ("Chipcard::PCSC::SCARD_INSERTED", TRUE);
-	sv_setiv (tmpSV,      SCARD_INSERTED); SvREADONLY_on (tmpSV);
-	tmpSV = perl_get_sv ("Chipcard::PCSC::SCARD_REMOVED", TRUE);
-	sv_setiv (tmpSV,      SCARD_REMOVED); SvREADONLY_on (tmpSV);
 
 #endif
 
@@ -251,7 +241,7 @@ void _InitErrorCodes () {
  * See file debuglog.c from your PCSClite distribution for extra
  * informations
  */
-const char * const _StringifyError (unsigned long Error) {
+const char * _StringifyError (unsigned long Error) {
 	switch ( Error ) {
 	case SCARD_S_SUCCESS:             return "Command successful.";
 	case SCARD_E_CANCELLED:           return "Command cancelled.";

@@ -43,6 +43,13 @@ Licences:
 History:
 ========
 
+1.4.6 - 7 March 2007, Ludovic ROUSSEAU
+    - add support of GNU/kFreeBSD
+
+1.4.5 - 2 March 2007, Ludovic ROUSSEAU
+    - remove some pcsc-lite specific constants to make it compile
+	  against pcsc-lite 1.4.0
+
 1.4.4 - 12 August 2006, Ludovic ROUSSEAU
     - add support of extended APDU
 
@@ -127,5 +134,5 @@ History:
 1.0.8 - 18 Oct 2001, Ludovic ROUSSEAU
 
 
-$Id: README,v 1.15 2006-08-12 18:55:09 rousseau Exp $
+$Id: README,v 1.17 2007-03-07 20:28:55 rousseau Exp $
 

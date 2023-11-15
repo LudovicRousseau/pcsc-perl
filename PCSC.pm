@@ -25,7 +25,7 @@
 #
 ###############################################################################
 
-# $Id: PCSC.pm,v 1.15 2006-08-12 17:35:49 rousseau Exp $
+# $Id: PCSC.pm,v 1.18 2006-10-10 21:09:14 rousseau Exp $
 
 package Chipcard::PCSC;
 
@@ -49,7 +49,7 @@ use vars       qw($VERSION @ISA @EXPORT);
 @EXPORT = qw(
 
 );
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 bootstrap Chipcard::PCSC $VERSION;
 
@@ -89,7 +89,7 @@ sub ascii_to_array($)
 	confess ('usage Chipcard::PCSC::ascii_to_array($string)') unless defined $ascii_string;
 
 	foreach $tmpVal (split / /, $ascii_string) {
-		croak ("ascii_to_array: wrong value ($tmpVal)") unless ($tmpVal =~ m/[0-9a-f][0-9a-f]/i);
+		croak ("ascii_to_array: wrong value ($tmpVal)") unless ($tmpVal =~ m/^[0-9a-f][0-9a-f]$/i);
 		push @return_array, hex ($tmpVal);
 	}
 

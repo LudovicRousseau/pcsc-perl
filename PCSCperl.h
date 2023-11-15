@@ -26,7 +26,7 @@
  *
  ******************************************************************************/
 
- /* $Id: PCSCperl.h,v 1.13 2006-05-30 20:35:25 rousseau Exp $ */
+ /* $Id: PCSCperl.h,v 1.15 2007-03-07 20:27:24 rousseau Exp $ */
 
 /******************************************************************************
 *    Contains basic definitions for a Perl wrapper to PCSC-lite. The code
@@ -59,14 +59,16 @@
 #endif
 
 
-#ifdef __linux__
+#if (defined __linux__) || (defined __FreeBSD_kernel__)
 #  include <dlfcn.h>
 #  include <pcsclite.h>
 #  define LOAD_LIB()      dlopen("libpcsclite.so.1", RTLD_LAZY)
 #  define CLOSE_LIB(x)    dlclose(x)
 #  define DLL_HANDLE      void*
 #  define GET_FCT         dlsym
-#endif /* LINUX */
+#define LPCTSTR LPCSTR
+#define LPTSTR LPSTR
+#endif /* LINUX/FreeBSD */
 
 #ifdef  __APPLE__
 #include <PCSC/wintypes.h>
