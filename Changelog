@@ -1,4 +1,128 @@
-2001-10-18  Ludovic Rousseau  <rousseau@trinity>
+2003-05-24  Ludovic Rousseau  <rousseau@ornithorynque>
+
+	* README: release 1.2.1
+
+	* MANIFEST: Card/test.pl removed
+
+	* MANIFEST: test_iso_error.pl moved into examples
+
+	* MANIFEST: files have moved
+
+	* Card/Makefile.PL: new file to install Card/Card.*
+
+	* Makefile.PL: moved files from Chipcard/ to .
+
+	* test.pl:
+	wait for ".. .." in TransmitWithCheck test since the SW will depend on
+	the inserted card
+
+	* Card/Card.pm: add a version number
+
+	* Card/Card.pm: Chipcard::PCSC::Utils.pm no longer exists
+
+2003-05-09  Ludovic Rousseau  <rousseau@ornithorynque>
+
+	* MANIFEST, Card/Card.pm, Card/Utils.pm: Utils.pm merged into Card.pm
+
+	* Card/Card.pod: example are now in typewriter text
+
+	* Card/Card.pod: typos
+
+	* MANIFEST: PCSC.pod moved from . to Chipcard/
+
+	* README: release 1.2.0
+
+	* MANIFEST: add Chipcard/PCSC/Utils.pm and test_iso_error.pl
+
+	* create_distrib.sh: use 'mkdir -p' instead of just 'mkdir'
+
+	* create_distrib.sh: make distclean only if Makefile exists
+
+	* create_distrib.sh: make distclean before anything else
+
+	* test.pl: add test support of TransmitWithCheck and
+	Chipcard::PCSC::Card::ISO7816Error
+
+	* examples/test_iso_error.pl:
+	small script to test output of Chipcard::PCSC::Card::ISO7816Error()
+
+	* Card/Card.pod:
+	add documentation for TransmitWithCheck() and ISO7816Error()
+
+	* Card/Utils.pm:
+	two new functions: TransmitWithCheck() and ISO7816Error()
+
+	* test/multiple_readers.pl:
+	cleanly exit if a second reader is not found
+
+	* t/test.t: remove Log list
+
+	* Card/Card.pm: some reformating
+
+2003-05-06  Ludovic Rousseau  <rousseau@ornithorynque>
+
+	* test/multiple_readers.pl, test/single_reader.pl, t/test.t, examples/gsm_directory.pl, Card/Card.pm, Card/Card.pod, PCSC.pm, PCSCperl.h, test.pl, MANIFEST, Makefile.PL, PCSC.pod, PCSC.xs:
+	naming scheme migration from PCSC to Chipcard::PCSC
+
+2002-11-07  Ludovic Rousseau  <rousseau@ornithorynque>
+
+	* README: release 1.1.3
+
+2002-08-29  Ludovic Rousseau  <rousseau@ornithorynque>
+
+	* PCSC.xs: add a pTHX_ cast to make it work with Perl 5.8
+
+	* PCSC.pm: add prototypes and contants definitions
+
+2002-08-28  Ludovic Rousseau  <rousseau@ornithorynque>
+
+	* README: release 1.1.2
+
+	* PCSCperl.h: link against libpcsclite.so.0 instead of libpcsclite.so
+
+2002-05-16  lvictor  <lvictor@ornithorynque>
+
+	* PCSC.xs:
+	 Modified error handling to use warn() instead of the more destructive
+	croak()... croak() only remains for blocking problems such as a missing
+	libraryetc...
+
+	 Implemented GetStatusChange and Cancel
+
+	* PCSC.pm: Added support for GetStatusChange and Cancel
+
+2002-03-07  Ludovic Rousseau  <rousseau@ornithorynque>
+
+	* README: release 1.1.1
+
+	* Card/Card.pm, Card/Card.pod, PCSC.pod, PCSC.xs: use bold for commands
+	changed -> into -E<gt> (reverse patch :-)
+
+2002-03-06  Ludovic Rousseau  <rousseau@ornithorynque>
+
+	* PCSCperl.h: comment unused variable declarations
+
+	* Makefile.PL: add "-O2 -Wall" arguments
+
+	* MANIFEST: add README file
+
+	* README: release 1.1.0
+
+	* README.Unix: removed release reference. See README instead
+
+	* Card/Card.pod, PCSC.pod: complete reindentation
+
+	* PCSC.xs: correct line wrap in licence text
+
+2002-03-05  Ludovic Rousseau  <rousseau@ornithorynque>
+
+	* README.Unix: Release 1.0.9
+
+	* PCSC.pm, README.Unix: correctly test if a digit is hexa or not
+
+	* Card/Card.pm: the minium APDU length is 4 bytes and not 5
+
+2001-10-18  Ludovic Rousseau  <rousseau@ornithorynque>
 
 	* MANIFEST: added LICENCE
 
@@ -13,19 +137,19 @@
 	* MANIFEST, README.Windows, remarks.txt:
 	remarks.txt renamed README.Windows
 
-	* create_distrib.sh, MANIFEST:
+	* MANIFEST, create_distrib.sh:
 	added some comments, remove exit used for debug
 
-	* create_distrib.sh, MANIFEST:
+	* MANIFEST, create_distrib.sh:
 	compare the files in the directory with MANIFEST to check all the files
 	will be included in the archive
 
-2001-10-17  Ludovic Rousseau  <rousseau@trinity>
+2001-10-17  Ludovic Rousseau  <rousseau@ornithorynque>
 
 	* create_distrib.sh:
 	Added checks: directory name format, directory existance
 
-2001-10-16  Ludovic Rousseau  <rousseau@trinity>
+2001-10-16  Ludovic Rousseau  <rousseau@ornithorynque>
 
 	* MANIFEST:
 	removed scriptor and gscriptor scripts (moved to pcsc-tools)
@@ -39,44 +163,44 @@
 
 	* README.Unix: quick install notes
 
-	* create_distrib.sh, MANIFEST: *** empty log message ***
+	* MANIFEST, create_distrib.sh: *** empty log message ***
 
 	* create_distrib.sh:
 	create a nice package without Debian specific stuff and CVS directories
 
-2001-10-10  Lionel Victor  <lvictor@trinity>
+2001-10-10  lvictor  <lvictor@ornithorynque>
 
 	* t/test.t: Initial check in
 
 	* PCSC.pm:
 	Added fake variable declarations/initialization to work with make test
 
-2001-09-07  Lionel Victor  <lvictor@trinity>
+2001-09-07  lvictor  <lvictor@ornithorynque>
 
 	* examples/gsm_directory.pl: cosmetic chage in the header comment
 
-2001-09-06  Ludovic Rousseau  <rousseau@trinity>
+2001-09-06  Ludovic Rousseau  <rousseau@ornithorynque>
 
 	* examples/gsm_directory.pl: added CVS Id and Log fields
 
 	* examples/gsm_directory.pl: typos in comments
 
-2001-09-06  Lionel Victor  <lvictor@trinity>
+2001-09-06  lvictor  <lvictor@ornithorynque>
 
 	* examples/gsm_directory.pl: Added a license
 
-2001-09-05  Lionel Victor  <lvictor@trinity>
+2001-09-05  lvictor  <lvictor@ornithorynque>
 
-	* examples/gsm_directory.pl, examples/gsm.script:
+	* examples/gsm.script, examples/gsm_directory.pl:
 	Added some GSM11.11 demo scripts to gscriptor/scriptor as well as a
 	small example of how to use PCSC-perl to read the directory from your
 	GSM card...
 
-	* PCSC/Card.pm:
+	* Card/Card.pm:
 	Do not warn anymore when P3(len) is not related to the number of bytes
 	to be transmitted after the APDU
 
-2001-09-05  Ludovic Rousseau  <rousseau@trinity>
+2001-09-05  Ludovic Rousseau  <rousseau@ornithorynque>
 
 	* test/single_reader.pl:
 	Added -w flag to #!/usr/bin/perl and corrected some warnings
@@ -96,7 +220,7 @@
 	* test.pl: Added CVS Log and Id fields
 	Added GPL licence
 
-2001-09-04  Lionel Victor  <lvictor@trinity>
+2001-09-04  lvictor  <lvictor@ornithorynque>
 
 	* test/multiple_readers.pl, test/single_reader.pl:
 	Now using the real double typed magical scalar $PCSC::errno to report
@@ -121,13 +245,13 @@
 	* test/multiple_readers.pl, test/single_reader.pl:
 	More cosmetic changes
 
-	* PCSC/Card.pm, PCSC/Card.pod, PCSC.pm, PCSC.pod, PCSC.xs, test.pl:
+	* Card/Card.pm, Card/Card.pod, PCSC.pm, PCSC.pod, PCSC.xs, test.pl:
 	Applied a patch from somebody who apparently wants to stay anonymous.
 	This patch includes mostly cosmetic changes and extra documentation about
 	array_to_ascii() and ascii_to_array(). Thanks to this contributor for his
 	help and time
 
-2001-07-02  Lionel Victor  <lvictor@trinity>
+2001-07-02  lvictor  <lvictor@ornithorynque>
 
 	* PCSC.pod, test.pl:
 	Made minor modifications (corrected some misspelled words in the doc and
@@ -135,11 +259,11 @@
 
 	* examples/readfile.script: Initial checkin
 
-2001-06-12  Jean-Luc GIRAUD  <giraud@trinity>
+2001-06-12  giraud  <giraud@ornithorynque>
 
 	* README.OSX: Small README about the OS X install.
 
-	* Makefile_OSX.pl, Makefile_OSX.PL:
+	* Makefile_OSX.PL, Makefile_OSX.pl:
 	Changed name tp .pl instead of .PL otherwise MakeMaker tries to run Makefile_OSX.PL
 
 	* Makefile_OSX.PL: Makefile dedicated to Mac OS X
@@ -149,15 +273,15 @@
 
 	* PCSCperl.h: Added support for MacOS X
 
-2001-05-31  Ludovic Rousseau  <rousseau@trinity>
+2001-05-31  Ludovic Rousseau  <rousseau@ornithorynque>
 
-	* PCSC/Card.pm, PCSC.pm: added hash-bang
+	* Card/Card.pm, PCSC.pm: added hash-bang
 
-2001-05-31  Lionel Victor  <lvictor@trinity>
+2001-05-31  lvictor  <lvictor@ornithorynque>
 
-	* Makefile.PL, PCSC/Card.pm, PCSC/Card.pod, PCSCperl.h, PCSC.pm, PCSC.pod, PCSC.xs, remarks.txt, test/multiple_readers.pl, test.pl, test/single_reader.pl, typemap:
+	* Card/Card.pm, Card/Card.pod, Makefile.PL, PCSC.pm, PCSC.pod, PCSC.xs, PCSCperl.h, remarks.txt, test.pl, test/multiple_readers.pl, test/single_reader.pl, typemap:
 	Initial import
 
-	* Makefile.PL, PCSC/Card.pm, PCSC/Card.pod, PCSCperl.h, PCSC.pm, PCSC.pod, PCSC.xs, remarks.txt, test/multiple_readers.pl, test.pl, test/single_reader.pl, typemap:
+	* Card/Card.pm, Card/Card.pod, Makefile.PL, PCSC.pm, PCSC.pod, PCSC.xs, PCSCperl.h, remarks.txt, test.pl, test/multiple_readers.pl, test/single_reader.pl, typemap:
 	New file.
 

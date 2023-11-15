@@ -8,10 +8,8 @@
  *    
  *    Copyright (C) 2001 - Lionel VICTOR
  *
- *    This program is free software; you can redistribute it and/or
- *    modify
- *    it under the terms of the GNU General Public License as published
- *    by
+ *    This program is free software; you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
  *    the Free Software Foundation; either version 2 of the License, or
  *    (at your option) any later version.
  *
@@ -24,17 +22,10 @@
  *    along with this program; if not, write to the Free Software
  *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  *    02111-1307 USA
- *******************************************************************************
- * $Id: PCSCperl.h,v 1.2 2001/06/12 13:41:38 giraud Exp $
- * $Log: PCSCperl.h,v $
- * Revision 1.2  2001/06/12 13:41:38  giraud
- * Added support for MacOS X
  *
- * Revision 1.1.1.1  2001/05/31 10:00:30  lvictor
- * Initial import
- *
- *
- */
+ ******************************************************************************/
+
+ /* $Id: PCSCperl.h,v 1.5 2003/05/06 21:23:26 rousseau Exp $ */
 
 /******************************************************************************
 *    Contains basic definitions for a Perl wrapper to PCSC-lite. The code
@@ -70,7 +61,7 @@
 #ifdef __linux__
 #  include <dlfcn.h>
 #  include <pcsclite.h>
-#  define LOAD_LIB()      dlopen("libpcsclite.so", RTLD_LAZY)
+#  define LOAD_LIB()      dlopen("libpcsclite.so.0", RTLD_LAZY)
 #  define CLOSE_LIB(x)    dlclose(x)
 #  define DLL_HANDLE      void*
 #  define GET_FCT         dlsym
@@ -114,7 +105,7 @@ DLL_HANDLE LOAD_LIB()
  
     if (!CFBundleLoadExecutable(bundle))
     {
-        CFRelease(bundle);
+	CFRelease(bundle);
 	return NULL;
     }
     return bundle;
@@ -161,9 +152,9 @@ LONG SCardListReaderGroups( SCARDCONTEXT, LPSTR, LPDWORD );
 */
 
 /* Declares a variable for any imported variable */
-static LPSCARD_IO_REQUEST gpioSCardT0Pci;
+/* static LPSCARD_IO_REQUEST gpioSCardT0Pci;
 static LPSCARD_IO_REQUEST gpioSCardT1Pci;
-static LPSCARD_IO_REQUEST gpioSCardRawPci;
+static LPSCARD_IO_REQUEST gpioSCardRawPci; */
 
 /* Declares a variable for any imported function */
 static TSCardEstablishContext hEstablishContext = NULL;
@@ -197,3 +188,4 @@ TSCardListReaderGroups hListReaderGroups = NULL;
 #endif
 
 /* End of File */
+

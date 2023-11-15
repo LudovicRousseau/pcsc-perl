@@ -1,12 +1,14 @@
+Card/Card.pm
+Card/Card.pod
+Card/Makefile.PL
 Changelog
 examples/gsm_directory.pl
 examples/gsm.script
+examples/test_iso_error.pl
 LICENCE
 Makefile_OSX.pl
 Makefile.PL
 MANIFEST
-PCSC/Card.pm
-PCSC/Card.pod
 PCSCperl.h
 PCSC.pm
 PCSC.pod

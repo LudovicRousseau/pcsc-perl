@@ -1,27 +1,79 @@
-PCSC-Perl is wrapper built around the PCSC/lite library
-[http://www.linuxnet.com] from David CORCORAN. The PCSC/lite
-library is an abstraction layer that allows standardized
-communications with a wide range of smart card readers. The
-native API for PCSC/lite is C. 
 
-The Perl wrapper lets you access the PCSC/lite API with Perl
-instead of the native C language. This will hopefully help
-you to quickly develop an application prototype or a
-personalisation script. 
+Perl interface to the PC/SC smart card library
+==============================================
 
-PCSC-Perl is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version
-2 of the License, or (at your option) any later version. 
+This package contains a Perl wrapper to the PC/SC smartcard library
+(pcsc-lite) [1] from MUSCLE [2] together with some small examples.
 
- This program is distributed in the hope that it will be
-useful, but WITHOUT ANY WARRANTY; without even the implied
-warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-PURPOSE. See the GNU General Public License for more details. 
+You can find applications using this wrapper in the pcsc-tools package
+[3].
 
-If you whish to report a bug concerning the wrapper or the
-associated tools, please feel free to contact the author by
-mail: Lionel VICTOR <lionel.victor@unforgettable.com>. 
+[1] http://www.linuxnet.com/middle.html
+[2] http://www.linuxnet.com/
+[3] http://ludovic.rousseau.free.fr/softwares/pcsc-tools/pcsc-tools.html
 
-If you have any questions about this wrapper, please visit
-http://www.pcsc-perl.org/
+Authors:
+========
+
+- Lionel VICTOR for the main part of the job
+- Ludovic ROUSSEAU for the debug and maintainance
+
+
+Licences:
+=========
+
+    pcsc-perl: wrapper to the PC/SC smartcard library
+    Copyright (C) 2001, 2002  Lionel VICTOR, Ludovic ROUSSEAU
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+History:
+========
+
+1.2.1 - 24 May 2003, Ludovic ROUSSEAU
+    - redesign the Makefile.PL to make the modules at least installable
+    - add Card/Makefile.PL to also install Chipcard::PCSC::Card
+    - modified test.pl to accept any SW in TransmitWithCheck
+
+1.2.0 - 9 May 2003, Ludovic ROUSSEAU
+    - naming scheme migration from PCSC to Chipcard::PCSC
+    - add TransmitWithCheck() and Chipcard::PCSC::Card::ISO7816Error()
+      functions
+
+1.1.3 - 7 Nov 2002, Ludovic ROUSSEAU
+    - small modifications to support Perl 5.8
+
+1.1.2 - 28 Aug 2002, Ludovic ROUSSEAU
+    - small modification to link against libpcsclite.so.0 instead of
+      libpcsclite.so since libpcsclite.so should only be available on
+      development platforms (-dev packages).
+
+1.1.1 - 7 Mar 2002, Ludovic ROUSSEAU
+    - small typesetting modifications od .pod files
+
+1.1.0 - 6 Mar 2002, Ludovic ROUSSEAU
+    - create this README file with the history
+    - complete reindentation of .pod files
+
+1.0.9 - 5 Mar 2002, Ludovic ROUSSEAU
+    - the minium APDU length is 4 bytes and not 5
+    - correctly test if a digit is hexa or not
+
+1.0.8 - 18 Oct 2001, Ludovic ROUSSEAU
+
+
+$Id: README,v 1.6 2003/05/24 20:57:21 rousseau Exp $
+
