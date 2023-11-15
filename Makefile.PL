@@ -13,7 +13,7 @@ if ($Config{'osname'} eq "darwin")
 {
 	# Mac OS X
 	$lddflags = $Config{lddlflags} . ' -framework CoreFoundation';
-    $inc = '-I/System/Library/Frameworks/PCSC.framework/Headers/ -I/System/Library/Frameworks/PCSC.framework/PrivateHeaders/';
+    $inc = '-I/tmp/include/PCSC';
 }
 else
 {

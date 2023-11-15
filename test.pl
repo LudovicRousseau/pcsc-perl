@@ -17,7 +17,7 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-# $Id: test.pl,v 1.14 2006-12-09 13:04:26 rousseau Exp $
+# $Id: test.pl,v 1.15 2011-03-06 15:51:42 rousseau Exp $
 
 use Test::More;
 use Chipcard::PCSC;
@@ -38,13 +38,13 @@ my $SendData;
 my $RecvData;
 my $sw;
 
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 diag("Getting context:");
 $hContext = new Chipcard::PCSC();
 die ("Can't create the pcsc object: $Chipcard::PCSC::errno\n") unless (defined $hContext);
 ok(defined $hContext, "new Chipcard::PCSC()");
 
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 diag("Retrieving readers'list:");
 @ReadersList = $hContext->ListReaders ();
 die ("Can't get readers' list: $Chipcard::PCSC::errno\n") unless (defined($ReadersList[0]));
@@ -53,7 +53,7 @@ $" = "\n  ";
 ok(defined($ReadersList[0]), "\$hContext->ListReaders ()");
 diag(@ReadersList);
 
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 diag("Getting status change:");
 my (@readers_states, $reader_state, $timeout, $event_state);
 # create the list or readers to watch
@@ -88,7 +88,7 @@ if (! ($readers_states[0]{'event_state'} &
 	@StatusResult = $hContext->GetStatusChange(\@readers_states, $timeout);
 }
 
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 diag("Connecting to the card:");
 $hCard = new Chipcard::PCSC::Card ($hContext);
 die ("Can't create the reader object: $Chipcard::PCSC::errno\n") unless (defined($hCard));
@@ -105,7 +105,7 @@ ok($hCard->{dwProtocol}==$Chipcard::PCSC::SCARD_PROTOCOL_T0 ||
 	$hCard->{dwProtocol}==$Chipcard::PCSC::SCARD_PROTOCOL_RAW,
 	"Can understand the current protocol: $hCard->{dwProtocol}");
 
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 diag("Getting status:");
 @StatusResult = $hCard->Status();
 die ("Can't get status: $Chipcard::PCSC::errno\n") unless ($StatusResult[0]);
@@ -114,12 +114,12 @@ diag("State: $StatusResult[1]");
 diag("Current protocol: $StatusResult[2]");
 diag("ATR: " . Chipcard::PCSC::array_to_ascii ($StatusResult[3]));
 
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 diag("Initiating transaction:");
 die ("Can't initiate transaction: $Chipcard::PCSC::errno\n") unless ($hCard->BeginTransaction());
 diag($hCard->BeginTransaction(), "\$hCard->BeginTransaction()");
 
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 diag("Exchanging data:");
 $SendData = Chipcard::PCSC::ascii_to_array ("00 A4 01 00 02 01 00");
 $RecvData = $hCard->Transmit($SendData);
@@ -128,7 +128,7 @@ die ("Can't transmit data: $Chipcard::PCSC::errno") unless (defined ($RecvData))
 diag("  Send -> " . Chipcard::PCSC::array_to_ascii ($SendData));
 diag("  Recv <- " . Chipcard::PCSC::array_to_ascii ($RecvData));
 
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 diag("TransmitWithCheck:");
 $SendData = "00 A4 00 00 02 3F 00";	# select DF 3F 00
 # wait for ".. .." since we the SW will depend on the inserted card
@@ -139,11 +139,11 @@ ok(defined $sw, "\$hCard->TransmitWithCheck");
 diag("  Send -> $SendData");
 diag("  Recv <- $RecvData (SW: $sw)");
 
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 diag("ISO7816Error:");
 diag("$sw: " . &Chipcard::PCSC::Card::ISO7816Error($sw));
 
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 # This test is commented since it is reader/driver specific and may do bad
 # things for another reader. Reader your reader and driver
 # specifications to know what data to use.
@@ -156,23 +156,23 @@ diag("$sw: " . &Chipcard::PCSC::Card::ISO7816Error($sw));
 #diag("  Send -> " . Chipcard::PCSC::array_to_ascii ($SendData));
 #diag("  Recv <- " . Chipcard::PCSC::array_to_ascii ($RecvData));
 
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 diag("Ending transaction:");
 die ("Can't terminate transaction: $Chipcard::PCSC::errno\n") unless ($hCard->EndTransaction($Chipcard::PCSC::SCARD_LEAVE_CARD));
 ok($hCard->EndTransaction($Chipcard::PCSC::SCARD_LEAVE_CARD),
 	"\$hCard->EndTransaction($Chipcard::PCSC::SCARD_LEAVE_CARD)");
 
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 diag("Disconnecting the card:");
 $tmpVal = $hCard->Disconnect($Chipcard::PCSC::SCARD_LEAVE_CARD);
 die ("Can't disconnect the Chipcard::PCSC object: $Chipcard::PCSC::errno\n") unless $tmpVal;
 ok($tmpVal, "\$hCard->Disconnect");
 
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 diag("Closing card object:");
 $hCard = undef;
 
-#-------------------------------------------------------------------------------
+#--------------------------------------------------------------------------
 diag("Closing context:");
 $hContext = undef;
 

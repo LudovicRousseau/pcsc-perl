@@ -1,3 +1,25 @@
+2011-03-06  Ludovic Rousseau  <rousseau@debian>
+
+	* README: release 1.4.12
+
+	* PCSC.xs: Also check for SVt_PVIV and not just SVt_IV.
+
+	Fixes Debian bug #613722 "libpcsc-perl: GetStatusChange error after print"
+
+	* PCSC.xs, PCSC.pm, test.pl: Use lines of less than 80 columns
+
+2010-10-27  Ludovic Rousseau  <rousseau@debian>
+
+	* create_distrib.sh: compress using bzip2 instead of gzip
+
+	* README: release 1.4.11
+
+	* PCSCperl.h: SCardCancelTransaction() is no more present in pcsc-lite
+
+	* PCSC.pm, PCSC.pod, PCSC.xs, PCSCperl.h:
+	SCardSetTimout is no more present in pcsc-lite > 1.6.4
+	It was a pcsc-lite specific and deprecated function
+
 2010-08-18  Ludovic Rousseau  <rousseau@debian>
 
 	* PCSCperl.h:

@@ -8,8 +8,6 @@ Chipcard::PCSC - Smart card reader interface library
 
  @ReadersList = $hContext->ListReaders ();
 
- $hContext->SetTimeout($timeout);
-
  $hContext->GetStatusChange(\@readers_states, $timeout);
 
  $apdu = Chipcard::PCSC::array_to_ascii(@apdu);
@@ -176,23 +174,6 @@ Example:
 
  $RecvData = $hCard->Transmit($SendData);
  print Chipcard::PCSC::array_to_ascii($RecvData);
-
-=item *
- B<$hContext-E<gt>SetTimeout( $timeout );>
-
-This method sets the working time that RPC uses when waiting for a
-server.
-
-It returns true upon successful execution or false otherwise.
-
-C<$timeout> contains the new timeout value in seconds.
-
-=item *
- B<$hContext-E<gt>SetTimeout();>
-
-This function is equivalent to:
-
- $hContext->SetTimeout(5);
 
 =back
 

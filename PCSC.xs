@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**************************************************************************
  *    Authors     : Lionel VICTOR <lionel.victor@unforgettable.com>
  *                                <lionel.victor@free.fr>
  *                  Ludovic ROUSSEAU <ludovic.rousseau@free.fr>
@@ -25,9 +25,9 @@
  *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  *    02111-1307 USA
  *
- ******************************************************************************/
+ **************************************************************************/
 
- /* $Id: PCSC.xs,v 1.25 2010-08-18 21:05:41 rousseau Exp $ */
+ /* $Id: PCSC.xs,v 1.28 2011-03-06 17:17:04 rousseau Exp $ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -282,9 +282,9 @@ const char * _StringifyError (unsigned long Error) {
 	};
 }
 
-/*****************************************************************************/
-/***************** Double Typed Magical variable PCSC::errno *****************/
-/*****************************************************************************/
+/*************************************************************************/
+/*************** Double Typed Magical variable PCSC::errno ***************/
+/*************************************************************************/
 
 /* This is an accessor to our internal double-typed magical variable */
 I32 gnLastError_get (pTHX_ IV nID, SV *sv) {
@@ -335,7 +335,7 @@ void _InitMagic () {
 MODULE = Chipcard::PCSC         PACKAGE = Chipcard::PCSC
 PROTOTYPES: ENABLE
 
-#///////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////
 
 bool
 _LoadPCSCLibrary ()
@@ -369,13 +369,8 @@ _LoadPCSCLibrary ()
 			hConnect          = (TSCardConnect)          GET_FCT (ghDll, "SCardConnect");
 			hStatus           = (TSCardStatus)           GET_FCT (ghDll, "SCardStatus");
 			hGetStatusChange  = (TSCardGetStatusChange)  GET_FCT (ghDll, "SCardGetStatusChange");
-			/* SetTimeout is not part of the original PCSC yet it is still important */
-			hSetTimeout       = (TSCardSetTimeout)       GET_FCT (ghDll, "SCardSetTimeout");
 #endif
 			if (
-#ifndef WIN32
-				!hSetTimeout ||
-#endif
 				!hEstablishContext || !hReleaseContext || !hListReaders || !hConnect ||
 				!hReconnect || ! hDisconnect || !hBeginTransaction || !hEndTransaction ||
 				!hTransmit || !hStatus || !hGetStatusChange || !hCancel || !hControl)
@@ -393,7 +388,7 @@ _LoadPCSCLibrary ()
 	OUTPUT:
 		RETVAL
 
-#///////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////
 #//   EstablishContext ()
 #//
 #// INPUT :
@@ -424,7 +419,7 @@ _EstablishContext (dwScope, pvReserved1, pvReserved2)
 			sv_setiv (ST(0), hContext);
 		}
 
-#///////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////
 #//   ReleaseContext ()
 #//
 #// INPUT :
@@ -448,7 +443,7 @@ _ReleaseContext (hContext)
 	OUTPUT:
 		RETVAL
 			
-#///////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////
 #//   ListReaders ()
 #//
 #// INPUT :
@@ -543,7 +538,7 @@ _ListReaders(hContext, svGroups)
 			XSRETURN_UNDEF;
 		}
 
-#///////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////
 #//   Connect ()
 #//
 #// INPUT :
@@ -576,7 +571,7 @@ _Connect (hContext, szReader, dwShareMode, dwPreferredProtocols)
 		XPUSHs (sv_2mortal(newSViv(hCard)));
 		XPUSHs (sv_2mortal(newSViv(dwActiveProtocol)));
 
-#///////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////
 #//   Reconnect ()
 #//
 #// INPUT :
@@ -607,7 +602,7 @@ _Reconnect (hCard, dwShareMode, dwPreferredProtocols, dwInitialization)
 		else
 			ST(0) = &PL_sv_undef;
 
-#///////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////
 #//   Disconnect ()
 #//
 #// INPUT :
@@ -632,7 +627,7 @@ _Disconnect (hCard, dwDisposition)
 	OUTPUT:
 		RETVAL
 
-#///////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////
 #//   Status ()
 #//
 #// INPUT :
@@ -772,7 +767,7 @@ _Status (hCard)
 		Safefree (szReaderName);
 		Safefree (pbAtr);
 
-#///////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////
 #//   Transmit ()
 #//
 #// INPUT :
@@ -892,7 +887,7 @@ _Transmit (hCard, dwProtocol, psvSendData)
 		/* Do not forget to free the dynamically allocated buffer */
 		Safefree (pbSendBuffer);
 
-#///////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////
 #//   Control ()
 #//
 #// INPUT :
@@ -986,7 +981,7 @@ _Control (hCard, dwControlCode, psvSendData)
 		Safefree (pbSendBuffer);
 
 
-#///////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////
 #//   BeginTransaction ()
 #//
 #// INPUT :
@@ -1009,7 +1004,7 @@ _BeginTransaction (hCard)
 	OUTPUT:
 		RETVAL
 
-#///////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////
 #//   EndTransaction ()
 #//
 #// INPUT :
@@ -1034,7 +1029,7 @@ _EndTransaction (hCard, dwDisposition)
 	OUTPUT:
 		RETVAL
 
-#///////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////
 #//   GetStatusChange ()
 #//
 #// This
@@ -1134,7 +1129,8 @@ _GetStatusChange (hContext, dwTimeout, psvReaderStates)
 
 				/* Copy the current status into the struct */
 				if (psvCurrentState != NULL) {
-					if (SvTYPE(*psvCurrentState) == SVt_IV) {
+					if (SvTYPE(*psvCurrentState) == SVt_IV
+						|| SvTYPE(*psvCurrentState) == SVt_PVIV) {
 //						printf ("We got a current_state\n");
 						rgReaderStates_t[nCount].dwCurrentState = SvIV (*psvCurrentState);
 //						printf ("which is : 0x%lX\n", rgReaderStates_t[nCount].dwCurrentState);
@@ -1156,7 +1152,8 @@ _GetStatusChange (hContext, dwTimeout, psvReaderStates)
 			
 				/* Copy the event status into the struct */
 				if (psvEventState != NULL) {
-					if (SvTYPE(*psvEventState) == SVt_IV) {
+					if (SvTYPE(*psvEventState) == SVt_IV
+					|| SvTYPE(*psvEventState) == SVt_PVIV) {
 						rgReaderStates_t[nCount].dwEventState = SvIV (*psvEventState);
 					} else {
 						gnLastError = SCARD_E_INVALID_PARAMETER;
@@ -1302,7 +1299,7 @@ _GetStatusChange (hContext, dwTimeout, psvReaderStates)
 
 
 
-#///////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////
 #//   Cancel ()
 #//
 #// This function cancels pending blocking requests from _GetStatusChange ()
@@ -1325,52 +1322,5 @@ _Cancel (hContext)
 			RETVAL = TRUE;
 	OUTPUT:
 		RETVAL
-
-#///////////////////////////////////////////////////////////////////////////////
-#//   SetTimeout ()
-#//
-#// This function is only defined for PCSClite that is why we build a
-#// stub after the #else processing command 
-#//
-#// INPUT :
-#// - $hContext ->
-#// - $dwTimeout -> new timeout value in seconds
-#// OUTPUT :
-#// returns either true or false depending on successful completion
-
-#ifndef WIN32
-
-unsigned long
-_SetTimeout (hContext, dwTimeout)
-	unsigned long hContext;
-	unsigned long dwTimeout;
-	CODE:
-
-
-		gnLastError = hSetTimeout (hContext, dwTimeout);
-
-		/* Then we check for an error */
-		if (gnLastError != SCARD_S_SUCCESS)
-			RETVAL = FALSE;
-		else
-			RETVAL = TRUE;
-	OUTPUT:
-		RETVAL
-
-#else
-
-#// Win32 does not implement SetTimeout therefore we simply define
-#// a stub.
-
-unsigned long
-_SetTimeout (hContext, dwTimeout)
-	unsigned long hContext;
-	unsigned long dwTimeout;
-	CODE:
-		RETVAL = TRUE;
-	OUTPUT:
-		RETVAL
-
-#endif
 
 # End of File #

@@ -68,6 +68,14 @@ Licences:
 History:
 ========
 
+1.4.12 - 6 March 2011, Ludovic ROUSSEAU
+    - Also check for SVt_PVIV and not just SVt_IV.
+    Fixes Debian bug #613722 "libpcsc-perl: GetStatusChange error after print"
+
+1.4.11 - 27 October 2010, Ludovic ROUSSEAU
+    - Do not use SCardSetTimout() since it is no more present in
+      pcsc-lite > 1.6.4
+
 1.4.10 - 18 August 2010, Ludovic ROUSSEAU
     - Use LPSCARD_READERSTATE instead of LPSCARD_READERSTATE_A since it
       is no more defined in pcsc-lite >= 1.6.2
@@ -174,5 +182,5 @@ History:
 1.0.8 - 18 Oct 2001, Ludovic ROUSSEAU
 
 
-$Id: README,v 1.23 2010-08-18 21:07:02 rousseau Exp $
+$Id: README,v 1.25 2011-03-06 19:17:42 rousseau Exp $
 

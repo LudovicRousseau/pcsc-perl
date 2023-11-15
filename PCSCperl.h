@@ -26,7 +26,7 @@
  *
  ******************************************************************************/
 
- /* $Id: PCSCperl.h,v 1.20 2010-08-18 21:25:52 rousseau Exp $ */
+ /* $Id: PCSCperl.h,v 1.22 2010-10-27 08:04:20 rousseau Exp $ */
 
 /******************************************************************************
 *    Contains basic definitions for a Perl wrapper to PCSC-lite. The code
@@ -123,7 +123,7 @@ void*  GET_FCT(CFBundleRef bundle, char *fct_name)
 /* other Unixes */
 #  include <dlfcn.h>
 #  include <pcsclite.h>
-#  define LOAD_LIB()      dlopen("libpcsclite.so.1", RTLD_LAZY)
+#  define LOAD_LIB()      dlopen("/tmp/lib/libpcsclite.dylib", RTLD_LAZY)
 #  define CLOSE_LIB(x)    dlclose(x)
 #  define DLL_HANDLE      void*
 #  define GET_FCT         dlsym
@@ -153,11 +153,9 @@ typedef LONG (WINAPI *TSCardControl)          ( SCARDHANDLE, DWORD, LPCBYTE, DWO
 typedef LONG (WINAPI *TSCardStatus)           ( SCARDHANDLE, LPTSTR, LPDWORD, LPDWORD, LPDWORD, LPBYTE, LPDWORD );
 typedef LONG (WINAPI *TSCardGetStatusChange)  ( SCARDHANDLE, DWORD, SCARD_READERSTATE *, DWORD );
 typedef LONG (WINAPI *TSCardCancel)           ( SCARDCONTEXT );
-typedef LONG (*TSCardSetTimeout)       ( SCARDCONTEXT, DWORD );
 
 /* these functions are not used */
 /*
-LONG SCardCancelTransaction( SCARDHANDLE );
 LONG SCardListReaderGroups( SCARDCONTEXT, LPSTR, LPDWORD );
 */
 
@@ -180,7 +178,6 @@ static TSCardControl          hControl          = NULL;
 static TSCardStatus           hStatus           = NULL;
 static TSCardGetStatusChange  hGetStatusChange  = NULL;
 static TSCardCancel           hCancel           = NULL;
-static TSCardSetTimeout       hSetTimeout       = NULL;
 
 /* Also declares some static variables */
 static DLL_HANDLE ghDll       = NULL;
@@ -188,7 +185,6 @@ static LONG       gnLastError = SCARD_S_SUCCESS;
 
 /* these functions are not used */
 /*
-TSCardCancelTransaction hCancelTransaction = NULL;
 TSCardListReaderGroups hListReaderGroups = NULL;
 */
 
