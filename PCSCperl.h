@@ -7,7 +7,7 @@
  *    Description : Perl wrapper to the PCSC API
  *    
  *    Copyright (C) 2001 - Lionel VICTOR
- *                  2003-2008 - Ludovic ROUSSEAU
+ *    Copyright (c) 2003-2010 - Ludovic ROUSSEAU
  *
  *    This program is free software; you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
  *
  ******************************************************************************/
 
- /* $Id: PCSCperl.h,v 1.17 2008-03-12 10:35:19 rousseau Exp $ */
+ /* $Id: PCSCperl.h,v 1.20 2010-08-18 21:25:52 rousseau Exp $ */
 
 /******************************************************************************
 *    Contains basic definitions for a Perl wrapper to PCSC-lite. The code
@@ -151,7 +151,7 @@ typedef LONG (WINAPI *TSCardEndTransaction)   ( SCARDHANDLE, DWORD );
 typedef LONG (WINAPI *TSCardTransmit)         ( SCARDHANDLE, LPCSCARD_IO_REQUEST, LPCBYTE, DWORD, LPSCARD_IO_REQUEST, LPBYTE, LPDWORD ); 
 typedef LONG (WINAPI *TSCardControl)          ( SCARDHANDLE, DWORD, LPCBYTE, DWORD, LPBYTE, DWORD, LPDWORD );
 typedef LONG (WINAPI *TSCardStatus)           ( SCARDHANDLE, LPTSTR, LPDWORD, LPDWORD, LPDWORD, LPBYTE, LPDWORD );
-typedef LONG (WINAPI *TSCardGetStatusChange)  ( SCARDHANDLE, DWORD, LPSCARD_READERSTATE_A, DWORD );
+typedef LONG (WINAPI *TSCardGetStatusChange)  ( SCARDHANDLE, DWORD, SCARD_READERSTATE *, DWORD );
 typedef LONG (WINAPI *TSCardCancel)           ( SCARDCONTEXT );
 typedef LONG (*TSCardSetTimeout)       ( SCARDCONTEXT, DWORD );
 

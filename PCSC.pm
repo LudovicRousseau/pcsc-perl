@@ -7,7 +7,8 @@
 #
 #    Description : Perl wrapper to the PCSC API
 #    
-#    Copyright (C) 2001 - Lionel VICTOR, 2003 Ludovic ROUSSEAU
+#    Copyright (C) 2001 - Lionel VICTOR
+#    Copyright (c) 2003-2010 Ludovic ROUSSEAU
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -25,7 +26,7 @@
 #
 ###############################################################################
 
-# $Id: PCSC.pm,v 1.19 2008-03-12 10:35:39 rousseau Exp $
+# $Id: PCSC.pm,v 1.22 2010-08-18 21:05:41 rousseau Exp $
 
 package Chipcard::PCSC;
 
@@ -182,79 +183,78 @@ sub DESTROY($)
 # Autoload methods go after __END__, and are processed by
 # the autosplit program.
 
-$Chipcard::PCSC::SCARD_STATE_ATRMATCH        = 0;
-$Chipcard::PCSC::SCARD_POWERED               = 0;
-$Chipcard::PCSC::SCARD_E_INVALID_HANDLE      = 0;
-$Chipcard::PCSC::SCARD_SCOPE_USER            = 0;
-$Chipcard::PCSC::SCARD_W_UNSUPPORTED_CARD    = 0;
-$Chipcard::PCSC::SCARD_E_NO_MEMORY           = 0;
 $Chipcard::PCSC::SCARD_ABSENT                = 0;
-$Chipcard::PCSC::SCARD_E_NOT_TRANSACTED      = 0;
-$Chipcard::PCSC::SCARD_F_UNKNOWN_ERROR       = 0;
-$Chipcard::PCSC::SCARD_INSERTED              = 0;
-$Chipcard::PCSC::SCARD_W_UNRESPONSIVE_CARD   = 0;
-$Chipcard::PCSC::SCARD_PRESENT               = 0;
-$Chipcard::PCSC::SCARD_E_SHARING_VIOLATION   = 0;
-$Chipcard::PCSC::SCARD_SPECIFIC              = 0;
-$Chipcard::PCSC::SCARD_STATE_CHANGED         = 0;
-$Chipcard::PCSC::SCARD_SCOPE_GLOBAL          = 0;
-$Chipcard::PCSC::SCARD_S_SUCCESS             = 0;
-$Chipcard::PCSC::SCARD_UNKNOWN               = 0;
-$Chipcard::PCSC::SCARD_SWALLOWED             = 0;
-$Chipcard::PCSC::SCARD_E_SERVICE_STOPPED     = 0;
-$Chipcard::PCSC::SCARD_E_UNSUPPORTED_FEATURE = 0;
-$Chipcard::PCSC::SCARD_STATE_MUTE            = 0;
 $Chipcard::PCSC::SCARD_E_CANCELLED           = 0;
-$Chipcard::PCSC::SCARD_F_WAITED_TOO_LONG     = 0;
-$Chipcard::PCSC::SCARD_E_SYSTEM_CANCELLED    = 0;
-$Chipcard::PCSC::SCARD_STATE_INUSE           = 0;
+$Chipcard::PCSC::SCARD_E_CANT_DISPOSE        = 0;
 $Chipcard::PCSC::SCARD_E_CARD_UNSUPPORTED    = 0;
-$Chipcard::PCSC::SCARD_W_UNPOWERED_CARD      = 0;
-$Chipcard::PCSC::SCARD_E_NOT_READY           = 0;
-$Chipcard::PCSC::SCARD_W_INSERTED_CARD       = 0;
-$Chipcard::PCSC::SCARD_STATE_EMPTY           = 0;
-$Chipcard::PCSC::SCARD_F_COMM_ERROR          = 0;
-$Chipcard::PCSC::SCARD_STATE_PRESENT         = 0;
-$Chipcard::PCSC::SCARD_E_NO_SMARTCARD        = 0;
-$Chipcard::PCSC::SCARD_RESET                 = 0;
-$Chipcard::PCSC::SCARD_EJECT_CARD            = 0;
-$Chipcard::PCSC::SCARD_RESET_CARD            = 0;
-$Chipcard::PCSC::SCARD_LEAVE_CARD            = 0;
-$Chipcard::PCSC::SCARD_E_INVALID_VALUE       = 0;
-$Chipcard::PCSC::SCARD_UNPOWER_CARD          = 0;
-$Chipcard::PCSC::SCARD_E_TIMEOUT             = 0;
-$Chipcard::PCSC::SCARD_SHARE_DIRECT          = 0;
-$Chipcard::PCSC::SCARD_E_PROTO_MISMATCH      = 0;
-$Chipcard::PCSC::SCARD_STATE_UNKNOWN         = 0;
 $Chipcard::PCSC::SCARD_E_DUPLICATE_READER    = 0;
-$Chipcard::PCSC::SCARD_W_RESET_CARD          = 0;
-$Chipcard::PCSC::SCARD_SCOPE_TERMINAL        = 0;
-$Chipcard::PCSC::SCARD_STATE_EXCLUSIVE       = 0;
-$Chipcard::PCSC::SCARD_NEGOTIABLE            = 0;
+$Chipcard::PCSC::SCARD_E_INSUFFICIENT_BUFFER = 0;
+$Chipcard::PCSC::SCARD_E_INVALID_ATR         = 0;
+$Chipcard::PCSC::SCARD_E_INVALID_HANDLE      = 0;
+$Chipcard::PCSC::SCARD_E_INVALID_PARAMETER   = 0;
+$Chipcard::PCSC::SCARD_E_INVALID_TARGET      = 0;
+$Chipcard::PCSC::SCARD_E_INVALID_VALUE       = 0;
+$Chipcard::PCSC::SCARD_EJECT_CARD            = 0;
+$Chipcard::PCSC::SCARD_E_NO_MEMORY           = 0;
+$Chipcard::PCSC::SCARD_E_NO_SERVICE          = 0;
+$Chipcard::PCSC::SCARD_E_NO_SMARTCARD        = 0;
+$Chipcard::PCSC::SCARD_E_NOT_READY           = 0;
+$Chipcard::PCSC::SCARD_E_NOT_TRANSACTED      = 0;
+$Chipcard::PCSC::SCARD_E_PCI_TOO_SMALL       = 0;
+$Chipcard::PCSC::SCARD_E_PROTO_MISMATCH      = 0;
 $Chipcard::PCSC::SCARD_E_READER_UNAVAILABLE  = 0;
 $Chipcard::PCSC::SCARD_E_READER_UNSUPPORTED  = 0;
-$Chipcard::PCSC::SCARD_E_CANT_DISPOSE        = 0;
-$Chipcard::PCSC::SCARD_W_REMOVED_CARD        = 0;
-$Chipcard::PCSC::SCARD_STATE_UNAVAILABLE     = 0;
-$Chipcard::PCSC::SCARD_STATE_IGNORE          = 0;
-$Chipcard::PCSC::SCARD_E_INSUFFICIENT_BUFFER = 0;
-$Chipcard::PCSC::SCARD_E_UNKNOWN_READER      = 0;
-$Chipcard::PCSC::SCARD_E_PCI_TOO_SMALL       = 0;
-$Chipcard::PCSC::SCARD_F_INTERNAL_ERROR      = 0;
-$Chipcard::PCSC::SCARD_E_INVALID_PARAMETER   = 0;
+$Chipcard::PCSC::SCARD_E_SERVICE_STOPPED     = 0;
+$Chipcard::PCSC::SCARD_E_SHARING_VIOLATION   = 0;
+$Chipcard::PCSC::SCARD_E_SYSTEM_CANCELLED    = 0;
+$Chipcard::PCSC::SCARD_E_TIMEOUT             = 0;
 $Chipcard::PCSC::SCARD_E_UNKNOWN_CARD        = 0;
-$Chipcard::PCSC::SCARD_E_INVALID_ATR         = 0;
-$Chipcard::PCSC::SCARD_E_INVALID_TARGET      = 0;
-$Chipcard::PCSC::SCARD_E_NO_SERVICE          = 0;
+$Chipcard::PCSC::SCARD_E_UNKNOWN_READER      = 0;
+$Chipcard::PCSC::SCARD_E_UNSUPPORTED_FEATURE = 0;
+$Chipcard::PCSC::SCARD_F_COMM_ERROR          = 0;
+$Chipcard::PCSC::SCARD_F_INTERNAL_ERROR      = 0;
+$Chipcard::PCSC::SCARD_F_UNKNOWN_ERROR       = 0;
+$Chipcard::PCSC::SCARD_F_WAITED_TOO_LONG     = 0;
+$Chipcard::PCSC::SCARD_INSERTED              = 0;
+$Chipcard::PCSC::SCARD_LEAVE_CARD            = 0;
+$Chipcard::PCSC::SCARD_NEGOTIABLE            = 0;
+$Chipcard::PCSC::SCARD_POWERED               = 0;
+$Chipcard::PCSC::SCARD_PRESENT               = 0;
 $Chipcard::PCSC::SCARD_REMOVED               = 0;
+$Chipcard::PCSC::SCARD_RESET                 = 0;
+$Chipcard::PCSC::SCARD_RESET_CARD            = 0;
+$Chipcard::PCSC::SCARD_SCOPE_GLOBAL          = 0;
+$Chipcard::PCSC::SCARD_SCOPE_TERMINAL        = 0;
+$Chipcard::PCSC::SCARD_SCOPE_USER            = 0;
+$Chipcard::PCSC::SCARD_SHARE_DIRECT          = 0;
+$Chipcard::PCSC::SCARD_SPECIFIC              = 0;
+$Chipcard::PCSC::SCARD_S_SUCCESS             = 0;
+$Chipcard::PCSC::SCARD_STATE_ATRMATCH        = 0;
+$Chipcard::PCSC::SCARD_STATE_CHANGED         = 0;
+$Chipcard::PCSC::SCARD_STATE_EMPTY           = 0;
+$Chipcard::PCSC::SCARD_STATE_EXCLUSIVE       = 0;
+$Chipcard::PCSC::SCARD_STATE_IGNORE          = 0;
+$Chipcard::PCSC::SCARD_STATE_INUSE           = 0;
+$Chipcard::PCSC::SCARD_STATE_MUTE            = 0;
+$Chipcard::PCSC::SCARD_STATE_PRESENT         = 0;
+$Chipcard::PCSC::SCARD_STATE_UNAVAILABLE     = 0;
 $Chipcard::PCSC::SCARD_STATE_UNAWARE         = 0;
+$Chipcard::PCSC::SCARD_STATE_UNKNOWN         = 0;
+$Chipcard::PCSC::SCARD_SWALLOWED             = 0;
+$Chipcard::PCSC::SCARD_UNKNOWN               = 0;
+$Chipcard::PCSC::SCARD_UNPOWER_CARD          = 0;
+$Chipcard::PCSC::SCARD_W_REMOVED_CARD        = 0;
+$Chipcard::PCSC::SCARD_W_RESET_CARD          = 0;
+$Chipcard::PCSC::SCARD_W_UNPOWERED_CARD      = 0;
+$Chipcard::PCSC::SCARD_W_UNRESPONSIVE_CARD   = 0;
+$Chipcard::PCSC::SCARD_W_UNSUPPORTED_CARD    = 0;
 
+$Chipcard::PCSC::SCARD_PROTOCOL_RAW          = 4;
 $Chipcard::PCSC::SCARD_PROTOCOL_T0           = 1;
 $Chipcard::PCSC::SCARD_PROTOCOL_T1           = 2;
-$Chipcard::PCSC::SCARD_PROTOCOL_RAW          = 4;
+$Chipcard::PCSC::SCARD_SHARE_DIRECT          = 3;
 $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE       = 1;
 $Chipcard::PCSC::SCARD_SHARE_SHARED          = 2;
-$Chipcard::PCSC::SCARD_SHARE_DIRECT          = 3;
 
 _LoadPCSCLibrary();
 

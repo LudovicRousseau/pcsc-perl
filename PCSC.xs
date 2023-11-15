@@ -7,7 +7,8 @@
  *
  *    Description : Perl wrapper to the PCSC API
  *    
- *    Copyright (C) 2001 - Lionel VICTOR, 2003-2004 Ludovic ROUSSEAU
+ *    Copyright (C) 2001 - Lionel VICTOR
+ *    Copyright (c) 2003-2010 Ludovic ROUSSEAU
  *
  *    This program is free software; you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -26,7 +27,7 @@
  *
  ******************************************************************************/
 
- /* $Id: PCSC.xs,v 1.19 2007-03-02 15:12:48 rousseau Exp $ */
+ /* $Id: PCSC.xs,v 1.25 2010-08-18 21:05:41 rousseau Exp $ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -124,14 +125,8 @@ void _InitErrorCodes () {
 	sv_setiv (tmpSV,      SCARD_E_NO_SERVICE); SvREADONLY_on (tmpSV);
 	tmpSV = perl_get_sv ("Chipcard::PCSC::SCARD_E_SERVICE_STOPPED", TRUE);
 	sv_setiv (tmpSV,      SCARD_E_SERVICE_STOPPED); SvREADONLY_on (tmpSV);
-
-#ifndef WIN32
-
 	tmpSV = perl_get_sv ("Chipcard::PCSC::SCARD_E_UNSUPPORTED_FEATURE", TRUE);
 	sv_setiv (tmpSV,      SCARD_E_UNSUPPORTED_FEATURE); SvREADONLY_on (tmpSV);
-
-#endif
-
 	tmpSV = perl_get_sv ("Chipcard::PCSC::SCARD_W_UNSUPPORTED_CARD", TRUE);
 	sv_setiv (tmpSV,      SCARD_W_UNSUPPORTED_CARD); SvREADONLY_on (tmpSV);
 	tmpSV = perl_get_sv ("Chipcard::PCSC::SCARD_W_UNRESPONSIVE_CARD", TRUE);
@@ -231,10 +226,8 @@ void _InitErrorCodes () {
 
 /* _StringifyError is copied from pcsc_stringify_error() which is a
  * function taken from PCSClite
- * It has been modified because PCSClite has errors unknown to Win32
- * (case SCARD_E_UNSUPPORTED_FEATURE for instance) and because I added a
- * few internal errors to the wrapper (SCARD_P_NOT_CONNECTED for
- * instance)
+ * It has been modified because I added a few internal errors to the
+ * wrapper (SCARD_P_NOT_CONNECTED for instance)
  * I also feel like using strong types like const char * const and
  * avoiding to use strcpy() is better from a security point of view.
  *
@@ -246,6 +239,8 @@ const char * _StringifyError (unsigned long Error) {
 	case SCARD_S_SUCCESS:             return "Command successful.";
 	case SCARD_E_CANCELLED:           return "Command cancelled.";
 	case SCARD_E_CANT_DISPOSE:        return "Cannot dispose handle.";
+	case SCARD_E_CARD_UNSUPPORTED:    return "Card is unsupported.";
+	case SCARD_E_DUPLICATE_READER:    return "Reader already exists.";
 	case SCARD_E_INSUFFICIENT_BUFFER: return "Insufficient buffer.";
 	case SCARD_E_INVALID_ATR:         return "Invalid ATR.";
 	case SCARD_E_INVALID_HANDLE:      return "Invalid handle.";
@@ -253,39 +248,34 @@ const char * _StringifyError (unsigned long Error) {
 	case SCARD_E_INVALID_TARGET:      return "Invalid target given.";
 	case SCARD_E_INVALID_VALUE:       return "Invalid value given.";
 	case SCARD_E_NO_MEMORY:           return "Not enough memory.";
+	case SCARD_E_NO_SERVICE:          return "Service not available.";
+	case SCARD_E_NO_SMARTCARD:        return "No smartcard inserted.";
+	case SCARD_E_NOT_READY:           return "Subsystem not ready.";
+	case SCARD_E_NOT_TRANSACTED:      return "Transaction failed.";
+	case SCARD_E_PCI_TOO_SMALL:       return "PCI struct too small.";
+	case SCARD_E_PROTO_MISMATCH:      return "Card protocol mismatch.";
+	case SCARD_E_READER_UNAVAILABLE:  return "Reader/s is unavailable.";
+	case SCARD_E_READER_UNSUPPORTED:  return "Reader is unsupported.";
+	case SCARD_E_SERVICE_STOPPED:     return "Service was stopped.";
+	case SCARD_E_SHARING_VIOLATION:   return "Sharing violation.";
+	case SCARD_E_SYSTEM_CANCELLED:    return "System cancelled.";
+	case SCARD_E_TIMEOUT:             return "Command timeout.";
+	case SCARD_E_UNKNOWN_CARD:        return "Unknown card.";
+	case SCARD_E_UNKNOWN_READER:      return "Unknown reader specified.";
+	case SCARD_E_UNSUPPORTED_FEATURE: return "Feature not supported.";
 	case SCARD_F_COMM_ERROR:          return "RPC transport error.";
 	case SCARD_F_INTERNAL_ERROR:      return "Unknown internal error.";
 	case SCARD_F_UNKNOWN_ERROR:       return "Unknown internal error.";
 	case SCARD_F_WAITED_TOO_LONG:     return "Waited too long.";
-	case SCARD_E_UNKNOWN_READER:      return "Unknown reader specified.";
-	case SCARD_E_TIMEOUT:             return "Command timeout.";
-	case SCARD_E_SHARING_VIOLATION:   return "Sharing violation.";
-	case SCARD_E_NO_SMARTCARD:        return "No smartcard inserted.";
-	case SCARD_E_UNKNOWN_CARD:        return "Unknown card.";
-	case SCARD_E_PROTO_MISMATCH:      return "Card protocol mismatch.";
-	case SCARD_E_NOT_READY:           return "Subsystem not ready.";
-	case SCARD_E_SYSTEM_CANCELLED:    return "System cancelled.";
-	case SCARD_E_NOT_TRANSACTED:      return "Transaction failed.";
-	case SCARD_E_READER_UNAVAILABLE:  return "Reader/s is unavailable.";
-	case SCARD_W_UNSUPPORTED_CARD:    return "Card is not supported.";
-	case SCARD_W_UNRESPONSIVE_CARD:   return "Card is unresponsive.";
-	case SCARD_W_UNPOWERED_CARD:      return "Card is unpowered.";
-	case SCARD_W_RESET_CARD:          return "Card was reset.";
 	case SCARD_W_REMOVED_CARD:        return "Card was removed.";
-	case SCARD_E_PCI_TOO_SMALL:       return "PCI struct too small.";
-	case SCARD_E_READER_UNSUPPORTED:  return "Reader is unsupported.";
-	case SCARD_E_DUPLICATE_READER:    return "Reader already exists.";
-	case SCARD_E_CARD_UNSUPPORTED:    return "Card is unsupported.";
-	case SCARD_E_NO_SERVICE:          return "Service not available.";
-	case SCARD_E_SERVICE_STOPPED:     return "Service was stopped.";
-#ifndef WIN32
-	/* These errors are specific to PCSClite WIN32 does not define them */
-	case SCARD_W_INSERTED_CARD:       return "Card was inserted.";
-	case SCARD_E_UNSUPPORTED_FEATURE: return "Feature not supported.";
-#endif
+	case SCARD_W_RESET_CARD:          return "Card was reset.";
+	case SCARD_W_UNPOWERED_CARD:      return "Card is unpowered.";
+	case SCARD_W_UNRESPONSIVE_CARD:   return "Card is unresponsive.";
+	case SCARD_W_UNSUPPORTED_CARD:    return "Card is not supported.";
+
 	/* The following errors are specific to the Perl wrapper */
-	case SCARD_P_NOT_CONNECTED:       return "Object is not connected";
 	case SCARD_P_ALREADY_CONNECTED:   return "Object is already connected";
+	case SCARD_P_NOT_CONNECTED:       return "Object is not connected";
 
 	/* We finally end with a generic error message */
 	default: return "Unknown (reader specific ?) error...";
@@ -849,7 +839,7 @@ _Transmit (hCard, dwProtocol, psvSendData)
 			 * the error SCARD_E_INVALID_VALUE.
 			 */
 			gnLastError = SCARD_E_INVALID_VALUE;
-			warn ("unknown protocol %d given at %s line %d\n\t",
+			warn ("unknown protocol %ld given at %s line %d\n\t",
 			      dwProtocol, __FILE__, __LINE__);
 			XSRETURN_UNDEF;
 		}
@@ -1061,7 +1051,7 @@ _GetStatusChange (hContext, dwTimeout, psvReaderStates)
 	unsigned long dwTimeout;
 	SV*           psvReaderStates;
 	PREINIT:
-		static SCARD_READERSTATE_A *rgReaderStates_t = NULL;
+		static SCARD_READERSTATE *rgReaderStates_t = NULL;
 		unsigned int               nCount = 0;
 		unsigned int               nATRCount = 0;
 		unsigned int               nReaders = 0;
@@ -1093,7 +1083,7 @@ _GetStatusChange (hContext, dwTimeout, psvReaderStates)
 			Safefree(rgReaderStates_t);
 
 		/* allocate the Reader States table */
-		Newz(2018, rgReaderStates_t, nReaders, SCARD_READERSTATE_A);
+		Newz(2018, rgReaderStates_t, nReaders, SCARD_READERSTATE);
 		if (rgReaderStates_t == NULL)
 		{
 			warn ("Could not allocate buffer at %s line %d\n\t",

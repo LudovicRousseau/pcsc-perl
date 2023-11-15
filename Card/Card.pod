@@ -253,7 +253,7 @@ the application will allow others to share the reader.
  $preferred_protocol
 
 is the protocol which should be used if possible. If the protocol is not
-available, an other protocol will be used and
+available, another protocol will be used and
 C<$hCard-E<gt>{dwProtocol}> will be set accordingly.
 C<$preferred_protocol> accept the following values:
 
@@ -359,7 +359,7 @@ the application will allow others to share the reader.
  $preferred_protocol
 
 is the protocol which should be used if possible. If the protocol is not
-available, an other protocol will be used and
+available, another protocol will be used and
 C<$hCard-E<gt>{dwProtocol}> will be set accordingly.
 C<$preferred_protocol> accept the following values:
 
@@ -549,7 +549,7 @@ card is powered
 
 ready for PTS
 
-=item 
+=item *
  $Chipcard::PCSC::SCARD_SPECIFIC
 
 PTS has been set
@@ -696,7 +696,6 @@ Example:
 
  ($sw, $RecvData) = $hCard->TransmitWithCheck($SendData, "6E 00", 1);
  warn "TransmitWithCheck: $Chipcard::PCSC::Card::Error" unless defined $sw;
- 
 
 =head2
  $hCard-E<gt>Control($control_code, \@data);
@@ -709,7 +708,6 @@ Example:
  $data = Chipcard::PCSC::ascii_to_array ("01 23 45");
  $RecvData = $hCard->Control(0x42000001, $SendData);
  die ("Can't Control data: $Chipcard::PCSC::errno") unless (defined ($RecvData));
- 
 
 =head2
  ISO7816Error($sw);

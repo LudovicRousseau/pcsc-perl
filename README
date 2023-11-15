@@ -47,7 +47,8 @@ Licences:
 =========
 
     pcsc-perl: wrapper to the PC/SC smartcard library
-    Copyright (C) 2001-2003  Lionel VICTOR, Ludovic ROUSSEAU
+    Copyright (C) 2001-2003  Lionel VICTOR
+    Copyright (C) 2001-2010  Ludovic ROUSSEAU
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -66,6 +67,18 @@ Licences:
 
 History:
 ========
+
+1.4.10 - 18 August 2010, Ludovic ROUSSEAU
+    - Use LPSCARD_READERSTATE instead of LPSCARD_READERSTATE_A since it
+      is no more defined in pcsc-lite >= 1.6.2
+
+1.4.9 - 30 June 2010, Ludovic ROUSSEAU
+    - remove reference to SCARD_W_INSERTED_CARD since it is no more
+      define in pcsc-lite 1.6.0 Thanks to Olivier Huber for the bug
+      report
+
+1.4.8 - 23 September 2009, Ludovic ROUSSEAU
+    - minor bugs fixed
 
 1.4.7 - 26 March 2008, Ludovic ROUSSEAU
     - merge all the Makefile.PL.* in Makefile.PL
@@ -161,5 +174,5 @@ History:
 1.0.8 - 18 Oct 2001, Ludovic ROUSSEAU
 
 
-$Id: README,v 1.19 2008-03-26 14:21:37 rousseau Exp $
+$Id: README,v 1.23 2010-08-18 21:07:02 rousseau Exp $
 

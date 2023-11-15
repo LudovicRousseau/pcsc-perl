@@ -138,6 +138,13 @@ To detect a status change you have to first get the status and then copy
 the 'event_state' in the 'current_state'. The method will return when
 both states are different or a timeout occurs.
 
+ @StatusResult = $hContext->GetStatusChange(\@readers_states);
+ foreach $reader (@readers_states)
+ {
+   $reader->{current_state} = $reader->{event_state};
+ }
+ @StatusResult = $hContext->GetStatusChange(\@readers_states);
+
 =item *
  B<$hContext-E<gt>GetStatusChange(\@readers_states);>
 
@@ -213,6 +220,8 @@ codes.  They are defined as read-only variables with in the PCSC module:
  $Chipcard::PCSC::SCARD_S_SUCCESS
  $Chipcard::PCSC::SCARD_E_CANCELLED
  $Chipcard::PCSC::SCARD_E_CANT_DISPOSE
+ $Chipcard::PCSC::SCARD_E_CARD_UNSUPPORTED
+ $Chipcard::PCSC::SCARD_E_DUPLICATE_READER
  $Chipcard::PCSC::SCARD_E_INSUFFICIENT_BUFFER
  $Chipcard::PCSC::SCARD_E_INVALID_ATR
  $Chipcard::PCSC::SCARD_E_INVALID_HANDLE
@@ -220,39 +229,35 @@ codes.  They are defined as read-only variables with in the PCSC module:
  $Chipcard::PCSC::SCARD_E_INVALID_TARGET
  $Chipcard::PCSC::SCARD_E_INVALID_VALUE
  $Chipcard::PCSC::SCARD_E_NO_MEMORY
- $Chipcard::PCSC::SCARD_E_UNKNOWN_READER
- $Chipcard::PCSC::SCARD_E_TIMEOUT
- $Chipcard::PCSC::SCARD_E_SHARING_VIOLATION
- $Chipcard::PCSC::SCARD_E_NO_SMARTCARD
- $Chipcard::PCSC::SCARD_E_UNKNOWN_CARD
- $Chipcard::PCSC::SCARD_E_PROTO_MISMATCH
- $Chipcard::PCSC::SCARD_E_NOT_READY
- $Chipcard::PCSC::SCARD_E_SYSTEM_CANCELLED
- $Chipcard::PCSC::SCARD_E_NOT_TRANSACTED
- $Chipcard::PCSC::SCARD_E_READER_UNAVAILABLE
- $Chipcard::PCSC::SCARD_E_PCI_TOO_SMALL
- $Chipcard::PCSC::SCARD_E_READER_UNSUPPORTED
- $Chipcard::PCSC::SCARD_E_DUPLICATE_READER
- $Chipcard::PCSC::SCARD_E_CARD_UNSUPPORTED
  $Chipcard::PCSC::SCARD_E_NO_SERVICE
+ $Chipcard::PCSC::SCARD_E_NO_SMARTCARD
+ $Chipcard::PCSC::SCARD_E_NOT_READY
+ $Chipcard::PCSC::SCARD_E_NOT_TRANSACTED
+ $Chipcard::PCSC::SCARD_E_PCI_TOO_SMALL
+ $Chipcard::PCSC::SCARD_E_PROTO_MISMATCH
+ $Chipcard::PCSC::SCARD_E_READER_UNAVAILABLE
+ $Chipcard::PCSC::SCARD_E_READER_UNSUPPORTED
  $Chipcard::PCSC::SCARD_E_SERVICE_STOPPED
+ $Chipcard::PCSC::SCARD_E_SHARING_VIOLATION
+ $Chipcard::PCSC::SCARD_E_SYSTEM_CANCELLED
+ $Chipcard::PCSC::SCARD_E_TIMEOUT
+ $Chipcard::PCSC::SCARD_E_UNKNOWN_CARD
+ $Chipcard::PCSC::SCARD_E_UNKNOWN_READER
+ $Chipcard::PCSC::SCARD_E_UNSUPPORTED_FEATURE
 
- $Chipcard::PCSC::SCARD_W_UNSUPPORTED_CARD
- $Chipcard::PCSC::SCARD_W_UNRESPONSIVE_CARD
- $Chipcard::PCSC::SCARD_W_UNPOWERED_CARD
- $Chipcard::PCSC::SCARD_W_RESET_CARD
  $Chipcard::PCSC::SCARD_W_REMOVED_CARD
- $Chipcard::PCSC::SCARD_W_INSERTED_CARD
+ $Chipcard::PCSC::SCARD_W_RESET_CARD
+ $Chipcard::PCSC::SCARD_W_UNPOWERED_CARD
+ $Chipcard::PCSC::SCARD_W_UNRESPONSIVE_CARD
+ $Chipcard::PCSC::SCARD_W_UNSUPPORTED_CARD
 
 PCSClite users will also be able to use the following (PCSClite
 specific) codes:
 
- $Chipcard::PCSC::SCARD_E_UNSUPPORTED_FEATURE
- $Chipcard::PCSC::SCARD_W_INSERTED_CARD
- $Chipcard::PCSC::SCARD_SCOPE_GLOBAL
- $Chipcard::PCSC::SCARD_RESET
  $Chipcard::PCSC::SCARD_INSERTED
  $Chipcard::PCSC::SCARD_REMOVED
+ $Chipcard::PCSC::SCARD_RESET
+ $Chipcard::PCSC::SCARD_SCOPE_GLOBAL
 
 In addition, the wrapper defines:
 
