@@ -123,7 +123,7 @@ void*  GET_FCT(CFBundleRef bundle, char *fct_name)
 /* other Unixes */
 #  include <dlfcn.h>
 #  include <pcsclite.h>
-#  define LOAD_LIB()      dlopen("/tmp/lib/libpcsclite.dylib", RTLD_LAZY)
+#  define LOAD_LIB()      dlopen("libpcsclite.so.1", RTLD_LAZY)
 #  define CLOSE_LIB(x)    dlclose(x)
 #  define DLL_HANDLE      void*
 #  define GET_FCT         dlsym

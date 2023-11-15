@@ -26,7 +26,7 @@
 #
 ###########################################################################
 
-# $Id: PCSC.pm,v 1.24 2011-03-06 15:51:42 rousseau Exp $
+# $Id: PCSC.pm,v 1.25 2013/04/01 10:23:33 rousseau Exp $
 
 package Chipcard::PCSC;
 
@@ -66,7 +66,7 @@ sub array_to_ascii($)
 	confess ('usage Chipcard::PCSC::array_to_ascii($string)') unless defined $byte_array_ref;
 
 	# return an empty string for an empty list
-	return "" if (! defined @{$byte_array_ref});
+	return "" if (! @{$byte_array_ref});
 
 	my $return_string;
 	my $tmpVal;

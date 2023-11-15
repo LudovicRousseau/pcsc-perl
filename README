@@ -68,6 +68,9 @@ Licences:
 History:
 ========
 
+1.4.13 - 1 April 2013, Ludovic ROUSSEAU
+    - Fix a warning with Perl 5.16
+
 1.4.12 - 6 March 2011, Ludovic ROUSSEAU
     - Also check for SVt_PVIV and not just SVt_IV.
     Fixes Debian bug #613722 "libpcsc-perl: GetStatusChange error after print"
@@ -182,5 +185,5 @@ History:
 1.0.8 - 18 Oct 2001, Ludovic ROUSSEAU
 
 
-$Id: README,v 1.25 2011-03-06 19:17:42 rousseau Exp $
+$Id: README,v 1.25 2011/03/06 19:17:42 rousseau Exp $
 
