@@ -135,6 +135,8 @@ void _InitErrorCodes () {
 	sv_setiv (tmpSV,      SCARD_W_UNPOWERED_CARD); SvREADONLY_on (tmpSV);
 	tmpSV = perl_get_sv ("Chipcard::PCSC::SCARD_W_RESET_CARD", TRUE);
 	sv_setiv (tmpSV,      SCARD_W_RESET_CARD); SvREADONLY_on (tmpSV);
+	tmpSV = perl_get_sv ("Chipcard::PCSC::SCARD_W_SECURITY_VIOLATION", TRUE);
+	sv_setiv (tmpSV,      SCARD_W_SECURITY_VIOLATION); SvREADONLY_on (tmpSV);
 	tmpSV = perl_get_sv ("Chipcard::PCSC::SCARD_W_REMOVED_CARD", TRUE);
 	sv_setiv (tmpSV,      SCARD_W_REMOVED_CARD); SvREADONLY_on (tmpSV);
 
@@ -269,6 +271,7 @@ const char * _StringifyError (unsigned long Error) {
 	case SCARD_F_WAITED_TOO_LONG:     return "Waited too long.";
 	case SCARD_W_REMOVED_CARD:        return "Card was removed.";
 	case SCARD_W_RESET_CARD:          return "Card was reset.";
+	case SCARD_W_SECURITY_VIOLATION:  return "Access denied.";
 	case SCARD_W_UNPOWERED_CARD:      return "Card is unpowered.";
 	case SCARD_W_UNRESPONSIVE_CARD:   return "Card is unresponsive.";
 	case SCARD_W_UNSUPPORTED_CARD:    return "Card is not supported.";

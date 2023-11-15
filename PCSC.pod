@@ -228,6 +228,7 @@ codes.  They are defined as read-only variables with in the PCSC module:
 
  $Chipcard::PCSC::SCARD_W_REMOVED_CARD
  $Chipcard::PCSC::SCARD_W_RESET_CARD
+ $Chipcard::PCSC::SCARD_W_SECURITY_VIOLATION
  $Chipcard::PCSC::SCARD_W_UNPOWERED_CARD
  $Chipcard::PCSC::SCARD_W_UNRESPONSIVE_CARD
  $Chipcard::PCSC::SCARD_W_UNSUPPORTED_CARD

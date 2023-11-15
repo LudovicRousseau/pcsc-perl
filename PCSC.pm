@@ -233,6 +233,7 @@ $Chipcard::PCSC::SCARD_UNKNOWN               = 0;
 $Chipcard::PCSC::SCARD_UNPOWER_CARD          = 0;
 $Chipcard::PCSC::SCARD_W_REMOVED_CARD        = 0;
 $Chipcard::PCSC::SCARD_W_RESET_CARD          = 0;
+$Chipcard::PCSC::SCARD_W_SECURITY_VIOLATION  = 0;
 $Chipcard::PCSC::SCARD_W_UNPOWERED_CARD      = 0;
 $Chipcard::PCSC::SCARD_W_UNRESPONSIVE_CARD   = 0;
 $Chipcard::PCSC::SCARD_W_UNSUPPORTED_CARD    = 0;
