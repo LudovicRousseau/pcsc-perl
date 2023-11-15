@@ -28,8 +28,6 @@
 #
 ###############################################################################
 
-# $Id: Card.pm,v 1.24 2008-03-26 17:10:08 rousseau Exp $
-
 package Chipcard::PCSC::Card;
 
 require Chipcard::PCSC;

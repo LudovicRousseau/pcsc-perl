@@ -25,25 +25,6 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #    02111-1307 USA
 ###############################################################################
-# $Id: Card.pm,v 1.4 2001/09/05 14:46:15 lvictor Exp $
-# $Log: Card.pm,v $
-# Revision 1.4  2001/09/05 14:46:15  lvictor
-# Do not warn anymore when P3(len) is not related to the number of bytes
-# to be transmitted after the APDU
-#
-# Revision 1.3  2001/09/04 08:11:14  lvictor
-# Applied a patch from somebody who apparently wants to stay anonymous.
-# This patch includes mostly cosmetic changes and extra documentation about
-# array_to_ascii() and ascii_to_array(). Thanks to this contributor for his
-# help and time
-#
-# Revision 1.2  2001/05/31 13:21:06  rousseau
-# added hash-bang
-#
-# Revision 1.1.1.1  2001/05/31 10:00:30  lvictor
-# Initial import
-#
-#
 
 package PCSC::Card;
 

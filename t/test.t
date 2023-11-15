@@ -18,8 +18,6 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-# $Id: test.t,v 1.6 2006-12-09 13:07:26 rousseau Exp $
-
 use Test::More;
 use Chipcard::PCSC;
 

@@ -26,8 +26,6 @@
  *
  ******************************************************************************/
 
- /* $Id: PCSCperl.h,v 1.22 2010-10-27 08:04:20 rousseau Exp $ */
-
 /******************************************************************************
 *    Contains basic definitions for a Perl wrapper to PCSC-lite. The code
 * here is meant to be portable to most Unices. It should as well compile

@@ -17,8 +17,6 @@
 #    along with this program; if not, write to the free software
 #    foundation, inc., 59 temple place, suite 330, boston, ma  02111-1307  usa
 
-# $Id: single_reader.pl,v 1.11 2006-08-12 17:35:54 rousseau Exp $
-
 use ExtUtils::testlib;
 use Chipcard::PCSC;
 use Chipcard::PCSC::Card;

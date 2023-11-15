@@ -17,8 +17,6 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-# $Id: multiple_readers.pl,v 1.10 2006-08-12 17:35:54 rousseau Exp $
-
 use ExtUtils::testlib;
 use Chipcard::PCSC;
 
