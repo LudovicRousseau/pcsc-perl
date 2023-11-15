@@ -1,6 +1,6 @@
 =head1 NAME
 
-Chipcard::PCSC - Smarcard reader interface library
+Chipcard::PCSC - Smart card reader interface library
 
 =head1 SYNOPSIS
 
@@ -24,7 +24,7 @@ The PCSC module implements the Chipcard::PCSC class. Objects of this
 class are used to communicate with the PCSC-lite daemon (see F<pcscd(1)>
 for more information).
 
-PC/SC represents an abstraction layer to smartcard readers. It provides
+PC/SC represents an abstraction layer to smart card readers. It provides
 a communication layer with a wide variety of smart card readers through
 a standardized API.
 
@@ -98,14 +98,14 @@ Here is a list of all the methods that can be used with a PCSC object.
  B<hContext-E<gt>ListReaders( $group );>
 
 This method returns the available readers in the given C<$group>. If
-ommited, C<$group> defaults to a null value meaning "all groups". Please
-note that as of this writing, C<$group> can safely be ommited as it is
+omitted, C<$group> defaults to a null value meaning "all groups". Please
+note that as of this writing, C<$group> can safely be omitted as it is
 not used by PCSClite.
 
-The return value upon succesful completion is an array of strings: one
-string by available reader. If an error occured, the undef value is
+The return value upon successful completion is an array of strings: one
+string by available reader. If an error occurred, the undef value is
 returned and C<$Chipcard::PCSC::errno> should be used to get more
-informations about the error.  (See section L<ERROR HANDLING> below for
+information about the error.  (See section L<ERROR HANDLING> below for
 more information). The following example describes the use of
 L<ListReaders>:
 
@@ -124,7 +124,7 @@ L<ListReaders>:
  B<$hContext-E<gt>GetStatusChange(\@readers_states, $timeout);>
 
 The method C<$hContext-E<gt>GetStatusChange(\@readers_states, $timeout)>
-uses a reference to a list of hashs. 
+uses a reference to a list of hashes. 
 
  # create the list or readers to watch
  map { push @readers_states, ({'reader_name'=>"$_"}) } @ReadersList;
@@ -176,7 +176,7 @@ Example:
 This method sets the working time that RPC uses when waiting for a
 server.
 
-It returns true upon successful exacution or false otherwise.
+It returns true upon successful execution or false otherwise.
 
 C<$timeout> contains the new timeout value in seconds.
 
@@ -261,13 +261,14 @@ In addition, the wrapper defines:
 
 =head1 SEE ALSO
 
-F<pcscd(1)> manpage has useful informations about PC/SC lite.
-L<Chipcard::PCSC::Card> manpage gives informations about how to
+F<pcscd(1)> manpage has useful information about PC/SC lite.
+L<Chipcard::PCSC::Card> manpage gives information about how to
 communicate with a reader and the smart card inside it.
 
 =head1 COPYRIGHT
 
 (C) Lionel VICTOR & Ludovic ROUSSEAU, 2001-2004, GNU GPL
+(C) Ludovic ROUSSEAU, 2005-2008, GNU GPL
 
 =head1 AUTHORS / ACKNOWLEDGEMENT
 

@@ -7,7 +7,7 @@
  *    Description : Perl wrapper to the PCSC API
  *    
  *    Copyright (C) 2001 - Lionel VICTOR
- *                  2003 - Ludovic ROUSSEAU
+ *                  2003-2008 - Ludovic ROUSSEAU
  *
  *    This program is free software; you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
  *
  ******************************************************************************/
 
- /* $Id: PCSCperl.h,v 1.15 2007-03-07 20:27:24 rousseau Exp $ */
+ /* $Id: PCSCperl.h,v 1.17 2008-03-12 10:35:19 rousseau Exp $ */
 
 /******************************************************************************
 *    Contains basic definitions for a Perl wrapper to PCSC-lite. The code
@@ -50,25 +50,13 @@
  */
 #  define MAX_ATR_SIZE    33
 #  define MAX_BUFFER_SIZE 264
-#endif /* WIN32 */
+
+#else /* WIN32 */
+
 /*   WIN32 entry points are called with the WINAPI convention
  * the following hack is to handle this shit
  */
-#ifndef WIN32
-#  define WINAPI
-#endif
-
-
-#if (defined __linux__) || (defined __FreeBSD_kernel__)
-#  include <dlfcn.h>
-#  include <pcsclite.h>
-#  define LOAD_LIB()      dlopen("libpcsclite.so.1", RTLD_LAZY)
-#  define CLOSE_LIB(x)    dlclose(x)
-#  define DLL_HANDLE      void*
-#  define GET_FCT         dlsym
-#define LPCTSTR LPCSTR
-#define LPTSTR LPSTR
-#endif /* LINUX/FreeBSD */
+#define WINAPI
 
 #ifdef  __APPLE__
 #include <PCSC/wintypes.h>
@@ -130,7 +118,21 @@ void*  GET_FCT(CFBundleRef bundle, char *fct_name)
     return fct_addr;
 }
 
+#else
+
+/* other Unixes */
+#  include <dlfcn.h>
+#  include <pcsclite.h>
+#  define LOAD_LIB()      dlopen("libpcsclite.so.1", RTLD_LAZY)
+#  define CLOSE_LIB(x)    dlclose(x)
+#  define DLL_HANDLE      void*
+#  define GET_FCT         dlsym
+#define LPCTSTR LPCSTR
+#define LPTSTR LPSTR
+
 #endif /* __APPLE__ */
+
+#endif /* WIN32 */
 
 /* extended APDU supported? (pcsc-lite >= 1.3.2 only) */
 #ifndef MAX_BUFFER_SIZE_EXTENDED

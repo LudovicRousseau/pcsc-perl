@@ -25,7 +25,7 @@
 #
 ###############################################################################
 
-# $Id: PCSC.pm,v 1.18 2006-10-10 21:09:14 rousseau Exp $
+# $Id: PCSC.pm,v 1.19 2008-03-12 10:35:39 rousseau Exp $
 
 package Chipcard::PCSC;
 
@@ -49,7 +49,7 @@ use vars       qw($VERSION @ISA @EXPORT);
 @EXPORT = qw(
 
 );
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 bootstrap Chipcard::PCSC $VERSION;
 

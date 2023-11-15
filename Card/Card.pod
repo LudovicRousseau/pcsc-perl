@@ -1,6 +1,6 @@
 =head1 NAME
 
-Chipcard::PCSC::Card - Smarcard communication library
+Chipcard::PCSC::Card - Smart card communication library
 
 =head1 SYNOPSIS
 
@@ -70,7 +70,7 @@ C<$hContext> is mandatory and contains the reference to a valid PCSC
 object.
 
 =item *
- B<$hCard = new Chipcard::PCSC::Card ($hContext, $reader_name, $share_mode, $prefered_protocol);>
+ B<$hCard = new Chipcard::PCSC::Card ($hContext, $reader_name, $share_mode, $preferred_protocol);>
 
 Constructs a new Chipcard::PCSC::Card object and connect to the
 specified reader.
@@ -80,7 +80,7 @@ specified reader.
 =item *
  $hContext
 
-is mandatory and contains the reference to a valid PCSC oject.
+is mandatory and contains the reference to a valid PCSC object.
 
 =item *
  $reader_name
@@ -90,7 +90,7 @@ is the name of the reader you want to connect to. It is of the form
 
 Please note that the list of available readers can be obtained with a
 call to C<$hContext-E<gt>ListReaders()>. (See the section named F<PCSC
-METHODS> in the F<Chipcard::PCSC> man page for more informations on
+METHODS> in the F<Chipcard::PCSC> man page for more information on
 C<ListReaders>).
 
 =item *
@@ -119,12 +119,12 @@ the application will allow others to share the reader.
 =back
 
 =item *
- $prefered_protocol
+ $preferred_protocol
 
 is the protocol which should be used if possible.  If the protocol is
 not available, another protocol will be used and
 C<$hCard-E<gt>{dwProtocol}> will be set accordingly. Both
-C<$hCard-E<gt>{dwProtocol}> and C<$prefered_protocol> accept the
+C<$hCard-E<gt>{dwProtocol}> and C<$preferred_protocol> accept the
 following values:
 
 =over 4
@@ -183,14 +183,14 @@ Here is a list of all the methods that can be used with a C<Chipcard::PCSC::Card
 object.
 
 =head2
- $hCard-E<gt>Connect($reader_name, $share_mode, $prefered_protocol);
+ $hCard-E<gt>Connect($reader_name, $share_mode, $preferred_protocol);
 
-C<Connect()> can be used to connect to the reader and its smartcard if
+C<Connect()> can be used to connect to the reader and its smart card if
 the connection has not been established yet. The default constructor can
 establish the connection if given enough parameters.
 
 The return value upon successful completion is the protocol used to
-communicate with the smartcard. It can be any of the following:
+communicate with the smart card. It can be any of the following:
 
 =over 4
 
@@ -221,7 +221,7 @@ It is of the form "GemPC410 0 0".
 
 Please note that the list of available readers can be obtained with a
 call to C<$hContext-E<gt>ListReaders()>. (See the section named F<PCSC
-METHODS> in the F<Chipcard::PCSC> man page for more informations on
+METHODS> in the F<Chipcard::PCSC> man page for more information on
 C<ListReaders>).
 
 =item *
@@ -250,12 +250,12 @@ the application will allow others to share the reader.
 =back
 
 =item *
- $prefered_protocol
+ $preferred_protocol
 
 is the protocol which should be used if possible. If the protocol is not
 available, an other protocol will be used and
 C<$hCard-E<gt>{dwProtocol}> will be set accordingly.
-C<$prefered_protocol> accept the following values:
+C<$preferred_protocol> accept the following values:
 
 =over 4
 
@@ -297,17 +297,17 @@ This method is equivalent to:
     $Chipcard::PCSC::SCARD_PROTOCOL_T1);
 
 =head2
- $hCard-E<gt>Reconnect($share_mode, $prefered_protocol, $initialization);
+ $hCard-E<gt>Reconnect($share_mode, $preferred_protocol, $initialization);
 
-C<Reconnect()> can be used to re-nogociate an already opened connection.
+C<Reconnect()> can be used to re-negotiate an already opened connection.
 This implies that the C<Chipcard::PCSC::Card> object is connected and
 has C<$hCard-E<gt>{hCard}> set accordingly.
 
-Reconnecting to a smartcard is used to change the share mode and the
+Reconnecting to a smart card is used to change the share mode and the
 current protocol.
 
-The return value upon successful completion is the protocol choosed to
-communicate with the smartcard. It can be any of the following:
+The return value upon successful completion is the protocol choose to
+communicate with the smart card. It can be any of the following:
 
 =over 4
 
@@ -356,12 +356,12 @@ the application will allow others to share the reader.
 =back
 
 =item *
- $prefered_protocol
+ $preferred_protocol
 
 is the protocol which should be used if possible. If the protocol is not
 available, an other protocol will be used and
 C<$hCard-E<gt>{dwProtocol}> will be set accordingly.
-C<$prefered_protocol> accept the following values:
+C<$preferred_protocol> accept the following values:
 
 =over 4
 
@@ -385,7 +385,7 @@ raw protocol
 =item *
  $initialization
 
-is the action to take when reconnecting to the smartcard. It can be any
+is the action to take when reconnecting to the smart card. It can be any
 of the following values:
 
 =over 4
@@ -415,11 +415,11 @@ eject on close
 =back
 
 =head2
- $hCard-E<gt>Reconnect($share_mode, $prefered_protocol);
+ $hCard-E<gt>Reconnect($share_mode, $preferred_protocol);
 
 This method is equivalent to:
 
- $hCard->Reconnect($share_mode, $prefered_protocol,
+ $hCard->Reconnect($share_mode, $preferred_protocol,
     $Chipcard::PCSC::SCARD_LEAVE_CARD);
 
 =head2
@@ -445,17 +445,17 @@ This method is equivalent to:
 =head2
  $hCard-E<gt>Disconnect($initialization);
 
-C<Disconnect()> closes the connection to the smartcard reader. It
+C<Disconnect()> closes the connection to the smart card reader. It
 returns true upon successful completion or undef otherwise.
 C<$hCard-E<gt>{hContext}> will be set to undef if the connection is
-successfuly closed.
+successfully closed.
 
 =over 4
 
 =item *
  $initialization
 
-is the action to take when reconnecting to the smartcard. It can be any
+is the action to take when reconnecting to the smart card. It can be any
 of the following values:
 
 =over 4
@@ -494,7 +494,7 @@ This method is equivalent to:
 =head2
  $hCard-E<gt>Status();
 
-C<Status()> returns the current status of the connection to a smartcard.
+C<Status()> returns the current status of the connection to a smart card.
 It is used to retrieve the ATR (Answer To Reset) value as well as the
 protocol being used to communicate.
 
@@ -618,7 +618,7 @@ Here is a small sample of how to use C<transmit>:
 C<BeginTransaction()> is used to temporarily get exclusive control over
 the smart card.
 
-It returns TRUE upon succesful completion and FALSE otherwise.
+It returns TRUE upon successful completion and FALSE otherwise.
 C<$Chipcard::PCSC::errno> should be set accordingly in case of an error.
 See section F<ERROR HANDLING> in F<Chipcard::PCSC> man page for more
 information.
@@ -629,7 +629,7 @@ information.
 C<EndTransaction()> is used to end a transaction initiated with
 C<BeginTransaction()>.
 
-It returns C<TRUE> upon succesful completion and FALSE otherwise.
+It returns C<TRUE> upon successful completion and FALSE otherwise.
 C<$Chipcard::PCSC::errno> should be set accordingly in case of an error.
 See section F<ERROR HANDLING> in F<Chipcard::PCSC> man page for more
 information.
@@ -689,7 +689,7 @@ method returns a list ($sw, $recv). $sw is the status word (like "90
 If the status word do not match the expression $sw_expected the method
 returns undef and the variable $Chipcard::PCSC::Card::Error is set.
 
-The $debug argument is optionnal. If present the method will print on
+The $debug argument is optional. If present the method will print on
 stdout the command sent and the response from the card.
 
 Example:
@@ -724,13 +724,15 @@ Example:
 
 =head1 SEE ALSO
 
-F<pcscd> manpage has useful informations about PC/SC-lite.
-F<Chipcard::PCSC> manpage holds all the necessary information to create
+F<pcscd> man page has useful information about PC/SC-lite.
+F<Chipcard::PCSC> man page holds all the necessary information to create
 the PCSC object which will be the basis of C<Chipcard::PCSC::Card>.
 
 =head1 COPYRIGHT
 
-(C) Lionel VICTOR & Ludovic ROUSSEAU, 2001-2003, GNU GPL
+(C) Lionel VICTOR, 2001, GNU GPL
+
+(C) Ludovic ROUSSEAU, 2003-2008, GNU GPL
 
 =head1 AUTHORS / ACKNOWLEDGEMENT
 

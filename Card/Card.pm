@@ -9,7 +9,7 @@
 #    Description : Perl wrapper to the PCSC API
 #    
 #    Copyright (C) 2001 - Lionel VICTOR
-#                  2003 - Ludovic ROUSSEAU
+#                  2003-2008 - Ludovic ROUSSEAU
 #
 #    This program is free software; you can redistribute it and/or
 #    modify it under the terms of the GNU General Public License as
@@ -28,7 +28,7 @@
 #
 ###############################################################################
 
-# $Id: Card.pm,v 1.21 2006-08-12 17:35:52 rousseau Exp $
+# $Id: Card.pm,v 1.24 2008-03-26 17:10:08 rousseau Exp $
 
 package Chipcard::PCSC::Card;
 
@@ -43,14 +43,14 @@ our $VERSION = '0.02';
 # Usage:
 # $hCard = new Chipcard::PCSC::Card ($hcontext);
 # $hCard = new Chipcard::PCSC::Card ($hcontext, $reader_name, $share_mode,
-#  $prefered_protocol);
+#  $preferred_protocol);
 #
 # the second version also connect to the supplied reader.
 # when no connection has been required, use Connect()
 #
 # default values:
 #  $share_mode = $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE
-#  $prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1
+#  $preferred_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1
 sub new
 {
 	my $class = shift;
@@ -58,7 +58,7 @@ sub new
 	my $hContext = shift;
 	my $reader_name = shift;
 	my $share_mode = shift;
-	my $prefered_protocol = shift;
+	my $preferred_protocol = shift;
 
 	my $container = {};
 
@@ -74,9 +74,9 @@ sub new
 	{
 		# Apply default values when required
 		$share_mode = $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE unless (defined($share_mode));
-		$prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1 unless (defined ($prefered_protocol));
+		$preferred_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1 unless (defined ($preferred_protocol));
 
-		($container->{hCard}, $container->{dwProtocol}) = Chipcard::PCSC::_Connect ($hContext->{hContext}, $reader_name, $share_mode, $prefered_protocol);
+		($container->{hCard}, $container->{dwProtocol}) = Chipcard::PCSC::_Connect ($hContext->{hContext}, $reader_name, $share_mode, $preferred_protocol);
 		return (undef) unless (defined $container->{hCard});
 	}
 
@@ -87,11 +87,11 @@ sub new
 } # new
 
 # Usage:
-# Connect ($reader_name, $share_mode, $prefered_protocol)
+# Connect ($reader_name, $share_mode, $preferred_protocol)
 #
 # default values:
 #  $share_mode = $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE
-#  $prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1
+#  $preferred_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1
 sub Connect
 {
 	my $self = shift;
@@ -107,16 +107,16 @@ sub Connect
 	# otherwise, we just pop the other parameters
 	my $reader_name = shift;
 	my $share_mode = shift;
-	my $prefered_protocol = shift;
+	my $preferred_protocol = shift;
 
 	# $reader_name is required so we check for its value
 	return (undef) unless (defined($reader_name));
 
 	# Apply default values when required
 	$share_mode = $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE unless (defined($share_mode));
-	$prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1 unless (defined ($prefered_protocol));
+	$preferred_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1 unless (defined ($preferred_protocol));
 
-	($self->{hCard}, $self->{dwProtocol}) = Chipcard::PCSC::_Connect ($self->{hContext}{hContext}, $reader_name, $share_mode, $prefered_protocol);
+	($self->{hCard}, $self->{dwProtocol}) = Chipcard::PCSC::_Connect ($self->{hContext}{hContext}, $reader_name, $share_mode, $preferred_protocol);
 
 	# We return the current protocole being used or undef if an error
 	# occured in this case, $self->{dwProtocol} should be undef
@@ -124,11 +124,11 @@ sub Connect
 } # Connect
 
 # Usage:
-# Reconnect ($share_mode, $prefered_protocol, $initialization)
+# Reconnect ($share_mode, $preferred_protocol, $initialization)
 #
 # default values:
 #  $share_mode = $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE
-#  $prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1
+#  $preferred_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1
 #  $initialization = $Chipcard::PCSC::SCARD_LEAVE_CARD
 sub Reconnect
 {
@@ -144,15 +144,15 @@ sub Reconnect
 	}
 
 	my $share_mode = shift;
-	my $prefered_protocol = shift;
+	my $preferred_protocol = shift;
 	my $initialization = shift;
 
 	# Apply default values when required
 	$share_mode = $Chipcard::PCSC::SCARD_SHARE_EXCLUSIVE unless (defined($share_mode));
-	$prefered_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1 unless (defined ($prefered_protocol));
+	$preferred_protocol = $Chipcard::PCSC::SCARD_PROTOCOL_T0 | $Chipcard::PCSC::SCARD_PROTOCOL_T1 unless (defined ($preferred_protocol));
 	$initialization = $Chipcard::PCSC::SCARD_LEAVE_CARD unless (defined($initialization));
 
-	$self->{dwProtocol} = Chipcard::PCSC::_Reconnect ($self->{hCard}, $share_mode, $prefered_protocol, $initialization);
+	$self->{dwProtocol} = Chipcard::PCSC::_Reconnect ($self->{hCard}, $share_mode, $preferred_protocol, $initialization);
 	return ($self->{dwProtocol});
 } # Reconnect
 
