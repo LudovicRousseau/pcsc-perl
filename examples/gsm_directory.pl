@@ -24,7 +24,7 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 
-# $Id: gsm_directory.pl,v 1.6 2003/05/06 21:23:30 rousseau Exp $
+# $Id: gsm_directory.pl,v 1.7 2006-08-12 17:35:53 rousseau Exp $
 
 
 use warnings;

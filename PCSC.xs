@@ -26,7 +26,7 @@
  *
  ******************************************************************************/
 
- /* $Id: PCSC.xs,v 1.14 2004/08/06 15:22:41 rousseau Exp $ */
+ /* $Id: PCSC.xs,v 1.17 2006-05-30 20:35:25 rousseau Exp $ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -432,7 +432,7 @@ _EstablishContext (dwScope, pvReserved1, pvReserved2)
 	void*          pvReserved1
 	void*          pvReserved2
 	PREINIT:
-		long hContext = 0;
+		SCARDCONTEXT hContext = 0;
 	CODE:
 		ST(0) = sv_newmortal();
 		gnLastError = hEstablishContext (dwScope, pvReserved1, pvReserved2, &hContext);
@@ -486,10 +486,10 @@ _ListReaders(hContext, svGroups)
 	unsigned long hContext
 	SV*           svGroups
 	PREINIT:
-		unsigned long  nBufferSize = 0;
-		unsigned char* szBuffer = NULL;
-		unsigned char* szCurrentToken = NULL;
-		unsigned char* mszGroups;
+		DWORD nBufferSize = 0;
+		char* szBuffer = NULL;
+		char* szCurrentToken = NULL;
+		char* mszGroups;
 	PPCODE:
 		/* Before doing anything, we check that we have a valid group. */
 		if (SvPOK(svGroups)) {
@@ -583,8 +583,8 @@ _Connect (hContext, szReader, dwShareMode, dwPreferredProtocols)
 	unsigned long dwShareMode
 	unsigned long dwPreferredProtocols
 	PREINIT:
-		unsigned long hCard = 0;
-		unsigned long dwActiveProtocol = 0;
+		SCARDHANDLE hCard = 0;
+		DWORD dwActiveProtocol = 0;
 	PPCODE:
 		gnLastError = hConnect (hContext, szReader, dwShareMode, dwPreferredProtocols, &hCard, &dwActiveProtocol);
 
@@ -615,7 +615,7 @@ _Reconnect (hCard, dwShareMode, dwPreferredProtocols, dwInitialization)
 	unsigned long dwPreferredProtocols
 	unsigned long dwInitialization
 	PREINIT:
-		unsigned long dwActiveProtocol = 0;
+		DWORD dwActiveProtocol = 0;
 	CODE:
 		ST(0) = sv_newmortal();
 		gnLastError = hReconnect (hCard, dwShareMode, dwPreferredProtocols, dwInitialization, &dwActiveProtocol);
@@ -686,19 +686,19 @@ _Status (hCard)
 		unsigned long  cbAtrLen = sizeof(tmpAtr);
 #else
 		char*          szReaderName = NULL;
-		unsigned long  cchReaderLen = 0;
+		DWORD cchReaderLen = 0;
 		unsigned char* pbAtr = NULL;
-		unsigned long  cbAtrLen = 0;
+		DWORD cbAtrLen = 0;
 #endif
-		unsigned long  dwState = 0;
-		unsigned long  dwProtocol = 0;
+		DWORD dwState = 0;
+		DWORD dwProtocol = 0;
 		AV*            aATR = 0;
 	PPCODE:
 		/* We call the function with a null cchReaderLen : this should
 		 * gives us the length of the buffer to allocate
 		 */
 		gnLastError = hStatus (hCard, szReaderName, &cchReaderLen,
-		                       &dwState, &dwProtocol, pbAtr, &cbAtrLen);
+		                       &dwState, &dwProtocol, (BYTE *)pbAtr, &cbAtrLen);
 		
 		/* Behaviour differs here from PCSC and PCSClite :
 		 * PCSC returns SUCCESS while PCSClite returns an error
@@ -717,7 +717,7 @@ _Status (hCard)
 				      __FILE__, __LINE__);
 				XSRETURN_UNDEF;
 			}
-			New (2018, pbAtr, cbAtrLen, char);
+			New (2018, pbAtr, cbAtrLen, unsigned char);
 			if (pbAtr == NULL) {
 				gnLastError = SCARD_E_NO_MEMORY;
 				warn ("Could not allocate buffer at %s line %d\n\t",
@@ -741,7 +741,7 @@ _Status (hCard)
 			}
 			/* Now we perform the real call to SCardStatus */
 			gnLastError = hStatus (hCard, szReaderName, &cchReaderLen,
-			                       &dwState, &dwProtocol, pbAtr, &cbAtrLen);
+			                       &dwState, &dwProtocol, (BYTE *)pbAtr, &cbAtrLen);
 			if (gnLastError != SCARD_S_SUCCESS) {
 				Safefree (szReaderName);
 				Safefree (pbAtr);
@@ -817,10 +817,10 @@ _Transmit (hCard, dwProtocol, psvSendData)
 	SV*           psvSendData;
 	PREINIT:
 		int                        nCount = 0;
-		static unsigned char*      pbSendBuffer = NULL;
-		static unsigned char       pbRecvBuffer [MAX_BUFFER_SIZE];
+		static char*               pbSendBuffer = NULL;
+		static unsigned char       pbRecvBuffer [MAX_BUFFER_SIZE_EXTENDED];
 		unsigned long              cbSendLength = 0;
-		unsigned long              cbRecvLength = sizeof (pbRecvBuffer);
+		DWORD                      cbRecvLength = sizeof (pbRecvBuffer);
 		SCARD_IO_REQUEST           ioSendPci, ioRecvPci;
 		AV*                        aRecvBuffer = NULL;
 	PPCODE:
@@ -885,7 +885,7 @@ _Transmit (hCard, dwProtocol, psvSendData)
 			pbSendBuffer[nCount] = (char)SvIV(*av_fetch((AV*)SvRV(psvSendData), nCount, 0));
 
 		/* Everything is ready : call the real function... */
-		gnLastError = hTransmit (hCard, &ioSendPci, pbSendBuffer, cbSendLength, &ioRecvPci, pbRecvBuffer, &cbRecvLength);
+		gnLastError = hTransmit (hCard, &ioSendPci, (BYTE *)pbSendBuffer, cbSendLength, &ioRecvPci, pbRecvBuffer, &cbRecvLength);
 		if (gnLastError != SCARD_S_SUCCESS) {
 			/* Free the buffer if something went wrong */
 			Safefree (pbSendBuffer);
@@ -932,10 +932,10 @@ _Control (hCard, dwControlCode, psvSendData)
 	SV*           psvSendData;
 	PREINIT:
 		int                        nCount = 0;
-		static unsigned char*      pbSendBuffer = NULL;
+		static char*               pbSendBuffer = NULL;
 		static unsigned char       pbRecvBuffer [MAX_BUFFER_SIZE];
 		unsigned long              cbSendLength = 0;
-		unsigned long              cbRecvLength = sizeof (pbRecvBuffer);
+		DWORD                      cbRecvLength = sizeof (pbRecvBuffer);
 		AV*                        aRecvBuffer = NULL;
 	PPCODE:
 		/* We make sure that the array is sane */
@@ -977,7 +977,7 @@ _Control (hCard, dwControlCode, psvSendData)
 
 		/* Everything is ready : call the real function... */
 		gnLastError = hControl (hCard, dwControlCode,
-			(cbSendLength > 0 ? pbSendBuffer : NULL), cbSendLength, 
+			(cbSendLength > 0 ? (BYTE *)pbSendBuffer : NULL), cbSendLength, 
 			pbRecvBuffer, sizeof(pbRecvBuffer), &cbRecvLength);
 
 		if (gnLastError != SCARD_S_SUCCESS) {

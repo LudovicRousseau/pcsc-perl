@@ -43,9 +43,15 @@ Licences:
 History:
 ========
 
+1.4.4 - 12 August 2006, Ludovic ROUSSEAU
+    - add support of extended APDU
+
+1.4.3 - 16 May 2006, Ludovic ROUSSEAU
+    - update for Mac OS X Tiger
+
 1.4.2 - 6 August 2004, Ludovic ROUSSEAU
     - allow to use SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1 as the protocol
-	  this is used by gscriptor 1.4.0
+      this is used by gscriptor 1.4.0
 
 1.4.1 - 4 July 2004, Ludovic ROUSSEAU
     - Card/Card.pm:
@@ -80,11 +86,11 @@ History:
     - Card.pm: by default use T=0 | T=1 protocols instead of just T=0
 
 1.2.2 - 27 May 2003, Ludovic ROUSSEAU
-    - add two constant definitions in PCSC.pm. Thanks to Ville Skytt‰
+    - add two constant definitions in PCSC.pm. Thanks to Ville Skytt√§
       for report and patch
     - add a PL_FILES section in Makefile*.PL to avoid problem since we
       have Makefile.PL and Makefile_OSX.PL. Again thanks goes to Ville
-      Skytt‰
+      Skytt√§
     - Also thanks to Wolfgang Hommel for uploading the package to CPAN
       and registering the official name Chipcard::PCSC (Wolfgang is
       maintainer of the Chipcard::CTAPI wrapper)
@@ -121,5 +127,5 @@ History:
 1.0.8 - 18 Oct 2001, Ludovic ROUSSEAU
 
 
-$Id: README,v 1.13 2004/08/06 15:24:50 rousseau Exp $
+$Id: README,v 1.15 2006-08-12 18:55:09 rousseau Exp $
 

@@ -17,7 +17,7 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-# $Id: test.pl,v 1.12 2004/05/30 20:10:11 rousseau Exp $
+# $Id: test.pl,v 1.13 2006-08-12 17:35:49 rousseau Exp $
 
 use ExtUtils::testlib;
 use Chipcard::PCSC;
@@ -67,7 +67,7 @@ for my $i (0..$#readers_states)
 	$event_state = $readers_states[$i]{'event_state'};
 	print "    state changed\n" if ($event_state & $Chipcard::PCSC::SCARD_STATE_CHANGED);
 	print "    card present\n" if ($event_state & $Chipcard::PCSC::SCARD_STATE_PRESENT);
-	print "    card abstent\n" if ($event_state & $Chipcard::PCSC::SCARD_STATE_EMPTY);
+	print "    card absent\n" if ($event_state & $Chipcard::PCSC::SCARD_STATE_EMPTY);
 	print "    card mute\n" if ($event_state & $Chipcard::PCSC::SCARD_STATE_MUTE);
 
 	$readers_states[$i]{'current_state'} = $event_state;

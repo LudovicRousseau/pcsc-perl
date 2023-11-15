@@ -9,5 +9,5 @@ Insert a smart card in the (first) PCSC reader
 $ make test
 $ sudo make install
 
-$Id: README.Unix,v 1.5 2002/03/06 07:53:58 rousseau Exp $
+$Id: README.Unix,v 1.6 2006-08-12 17:35:49 rousseau Exp $
 

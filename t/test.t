@@ -18,7 +18,7 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-# $Id: test.t,v 1.3 2003/05/09 17:28:50 rousseau Exp $
+# $Id: test.t,v 1.4 2006-05-04 12:52:10 rousseau Exp $
 
 use ExtUtils::testlib;
 use Chipcard::PCSC;

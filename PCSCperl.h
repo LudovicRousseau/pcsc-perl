@@ -26,7 +26,7 @@
  *
  ******************************************************************************/
 
- /* $Id: PCSCperl.h,v 1.11 2004/07/04 12:51:24 rousseau Exp $ */
+ /* $Id: PCSCperl.h,v 1.13 2006-05-30 20:35:25 rousseau Exp $ */
 
 /******************************************************************************
 *    Contains basic definitions for a Perl wrapper to PCSC-lite. The code
@@ -69,7 +69,9 @@
 #endif /* LINUX */
 
 #ifdef  __APPLE__
-#include <PCSC/pcsclite.h>
+#include <PCSC/wintypes.h>
+#include <PCSC/winscard.h>
+#define LPCTSTR LPCSTR
 #include <CoreFoundation/CFBundle.h>
 #include <CoreFoundation/CFString.h>
 #include <CoreFoundation/CFURL.h>
@@ -128,6 +130,10 @@ void*  GET_FCT(CFBundleRef bundle, char *fct_name)
 
 #endif /* __APPLE__ */
 
+/* extended APDU supported? (pcsc-lite >= 1.3.2 only) */
+#ifndef MAX_BUFFER_SIZE_EXTENDED
+#define MAX_BUFFER_SIZE_EXTENDED MAX_BUFFER_SIZE
+#endif
 
 /* Definitine fuctions imported from the PCSC library and used by the stub */
 typedef LONG (WINAPI *TSCardEstablishContext) ( DWORD, LPCVOID, LPCVOID, LPSCARDCONTEXT );
