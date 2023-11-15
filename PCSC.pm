@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 ###############################################################################
 #    Authors     : Lionel VICTOR <lionel.victor@unforgettable.com>
 #                                 <lionel.victor@free.fr>
@@ -27,7 +25,7 @@
 #
 ###############################################################################
 
-# $Id: PCSC.pm,v 1.10 2003/05/06 21:23:27 rousseau Exp $
+# $Id: PCSC.pm,v 1.12 2003/05/25 20:29:47 rousseau Exp $
 
 package Chipcard::PCSC;
 
@@ -217,6 +215,8 @@ $Chipcard::PCSC::SCARD_STATE_PRESENT         = 0;
 $Chipcard::PCSC::SCARD_E_NO_SMARTCARD        = 0;
 $Chipcard::PCSC::SCARD_RESET                 = 0;
 $Chipcard::PCSC::SCARD_EJECT_CARD            = 0;
+$Chipcard::PCSC::SCARD_RESET_CARD            = 0;
+$Chipcard::PCSC::SCARD_LEAVE_CARD            = 0;
 $Chipcard::PCSC::SCARD_E_INVALID_VALUE       = 0;
 $Chipcard::PCSC::SCARD_UNPOWER_CARD          = 0;
 $Chipcard::PCSC::SCARD_E_TIMEOUT             = 0;

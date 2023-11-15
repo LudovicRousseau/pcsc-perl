@@ -1,10 +1,8 @@
 
-A very quick documentation on how to buld the wrapper for Mac OS X.
+A very quick documentation on how to build the wrapper for Mac OS X.
 
-- run Makefile_OSX.pl
-	# ./Makefile_OSX.pl
-- type make
-	# make
+# perl Makefile_OSX.PL
+# make
 
 The wrapper should then build nicely. If you run one of the test scripts,
 it should work.

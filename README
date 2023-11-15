@@ -8,9 +8,9 @@ This package contains a Perl wrapper to the PC/SC smartcard library
 You can find applications using this wrapper in the pcsc-tools package
 [3].
 
-[1] http://www.linuxnet.com/middle.html
-[2] http://www.linuxnet.com/
-[3] http://ludovic.rousseau.free.fr/softwares/pcsc-tools/pcsc-tools.html
+[1] http://www.musclecard.com/middle.html
+[2] http://www.musclecard.com/
+[3] http://ludovic.rousseau.free.fr/softwares/pcsc-tools/
 
 Authors:
 ========
@@ -23,7 +23,7 @@ Licences:
 =========
 
     pcsc-perl: wrapper to the PC/SC smartcard library
-    Copyright (C) 2001, 2002  Lionel VICTOR, Ludovic ROUSSEAU
+    Copyright (C) 2001-2003  Lionel VICTOR, Ludovic ROUSSEAU
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,6 +42,16 @@ Licences:
 
 History:
 ========
+
+1.2.2 - 27 May 2003, Ludovic ROUSSEAU
+    - add two constant definitions in PCSC.pm. Thanks to Ville Skyttä
+      for report and patch
+    - add a PL_FILES section in Makefile*.PL to avoid problem since we
+      have Makefile.PL and Makefile_OSX.PL. Again thanks goes to Ville
+      Skyttä
+    - Also thanks to Wolfgang Hommel for uploading the package to CPAN
+      and registering the official name Chipcard::PCSC (Wolfgang is
+      maintainer of the Chipcard::CTAPI wrapper)
 
 1.2.1 - 24 May 2003, Ludovic ROUSSEAU
     - redesign the Makefile.PL to make the modules at least installable
@@ -75,5 +85,5 @@ History:
 1.0.8 - 18 Oct 2001, Ludovic ROUSSEAU
 
 
-$Id: README,v 1.6 2003/05/24 20:57:21 rousseau Exp $
+$Id: README,v 1.7 2003/05/27 19:30:30 rousseau Exp $
 

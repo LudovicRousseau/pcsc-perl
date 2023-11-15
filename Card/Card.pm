@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-
 ###############################################################################
 #
 #    Authors     : Lionel VICTOR <lionel.victor@unforgettable.com>
@@ -30,7 +28,7 @@
 #
 ###############################################################################
 
-# $Id: Card.pm,v 1.11 2003/05/24 20:49:40 rousseau Exp $
+# $Id: Card.pm,v 1.12 2003/05/25 20:29:48 rousseau Exp $
 
 package Chipcard::PCSC::Card;
 

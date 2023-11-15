@@ -6,7 +6,7 @@ examples/gsm_directory.pl
 examples/gsm.script
 examples/test_iso_error.pl
 LICENCE
-Makefile_OSX.pl
+Makefile_OSX.PL
 Makefile.PL
 MANIFEST
 PCSCperl.h

@@ -1,3 +1,29 @@
+2003-05-27  Ludovic Rousseau  <rousseau@ornithorynque>
+
+	* README: release 1.2.2
+
+	* MANIFEST:
+	Makefile_OSX.pl is renamed Makefile_OSX.PL since it was not a correct
+	solution to avoid automatic use by Perl. We use PL_FILES instead.
+
+	* Makefile_OSX.PL:
+	use the new naming scheme and add PL_FILES line to avoid problems with
+	the other Makefile.PL
+
+	* Makefile.PL: add PL_FILES line to avoid problem with Makefile_OSX.PL
+
+2003-05-25  Ludovic Rousseau  <rousseau@ornithorynque>
+
+	* README.OSX: addapted comment to the updated Makefile_OSX.PL
+
+	* Makefile_OSX.PL: remove #!/usr/bin/perl -w
+
+	* Card/Card.pm, PCSC.pm:
+	removed #!/usr/bin/perl as suggested by Ville Skyttä
+
+	* PCSC.pm:
+	add constant definition (thanks to Ville Skyttä for report and patch)
+
 2003-05-24  Ludovic Rousseau  <rousseau@ornithorynque>
 
 	* README: release 1.2.1
@@ -263,10 +289,8 @@
 
 	* README.OSX: Small README about the OS X install.
 
-	* Makefile_OSX.PL, Makefile_OSX.pl:
+	* Makefile_OSX.PL:
 	Changed name tp .pl instead of .PL otherwise MakeMaker tries to run Makefile_OSX.PL
-
-	* Makefile_OSX.PL: Makefile dedicated to Mac OS X
 
 	* PCSC.pod, PCSC.xs:
 	Modification for Mac OS X support (LOAD_LIB replaced by LOAD_LIB())
