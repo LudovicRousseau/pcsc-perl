@@ -1,3 +1,27 @@
+2015-11-19  author  <author@debian>
+
+	* README: Release 1.4.14
+
+	* PCSC.xs: Update copyright date
+
+	* PCSC.xs: _StringifyError(): cast Error in a (DWORD)
+
+	On Mac OS X El Capitan (at least) the value is extended to 64 bits and
+	is then wrong.
+
+	We get 0xFFFFFFFF80100068 instead of 0x80100068 and all the error codes
+	are all converted to the default error: "Unknown (reader specific ?) error..."
+
+2014-12-05  author  <author@debian>
+
+	* LICENCE: Update GNU GPL v2 license text
+
+	The FSF postal adress has changed.
+
+	Thanks to Martin Hauke for the bug report.
+
+	* README: Release 1.4.13
+
 2013-04-01  author  <author@debian>
 
 	* create_distrib.sh:

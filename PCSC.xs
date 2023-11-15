@@ -8,7 +8,7 @@
  *    Description : Perl wrapper to the PCSC API
  *    
  *    Copyright (C) 2001 - Lionel VICTOR
- *    Copyright (c) 2003-2010 Ludovic ROUSSEAU
+ *    Copyright (c) 2003-2015 Ludovic ROUSSEAU
  *
  *    This program is free software; you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
  *
  **************************************************************************/
 
- /* $Id: PCSC.xs,v 1.28 2011-03-06 17:17:04 rousseau Exp $ */
+ /* $Id: PCSC.xs,v 1.30 2015/11/19 16:05:17 rousseau Exp $ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -235,7 +235,7 @@ void _InitErrorCodes () {
  * informations
  */
 const char * _StringifyError (unsigned long Error) {
-	switch ( Error ) {
+	switch ( (DWORD)Error ) {
 	case SCARD_S_SUCCESS:             return "Command successful.";
 	case SCARD_E_CANCELLED:           return "Command cancelled.";
 	case SCARD_E_CANT_DISPOSE:        return "Cannot dispose handle.";

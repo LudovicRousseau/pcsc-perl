@@ -68,6 +68,10 @@ Licences:
 History:
 ========
 
+1.4.14 - 19 November 2015, Ludovic ROUSSEAU
+    - Fix _StringifyError() on Mac OS X. The string version of
+      PCSC::errno now works.
+
 1.4.13 - 1 April 2013, Ludovic ROUSSEAU
     - Fix a warning with Perl 5.16
 
@@ -185,5 +189,5 @@ History:
 1.0.8 - 18 Oct 2001, Ludovic ROUSSEAU
 
 
-$Id: README,v 1.25 2011/03/06 19:17:42 rousseau Exp $
+$Id: README,v 1.27 2015/11/19 16:21:23 rousseau Exp $
 
