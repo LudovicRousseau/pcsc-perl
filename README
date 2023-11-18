@@ -68,6 +68,9 @@ Licences:
 History:
 ========
 
+1.4.15 - 18 November 2023, Ludovic ROUSSEAU
+    - add support of SCARD_W_SECURITY_VIOLATION error code
+
 1.4.14 - 19 November 2015, Ludovic ROUSSEAU
     - Fix _StringifyError() on Mac OS X. The string version of
       PCSC::errno now works.
