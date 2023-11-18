@@ -8,7 +8,7 @@
 
 # exit in case of error
 set -e
-set -x
+# set -x
 
 dir=$(basename "$(pwd)")
 
@@ -43,16 +43,16 @@ then
 fi
 
 # find files present
-# remove ^debian and ^create_distrib.sh
-find . -type f | grep -v CVS | cut -c 3- | grep -v ^create_distrib.sh | sort > "$present_files"
-cat MANIFEST | sort > "$manifest_files"
+# remove ^.git and ^create_distrib.sh
+find . -type f | grep -v .git | cut -c 3- | grep -v ^create_distrib.sh | sort > "$present_files"
+sort MANIFEST > "$manifest_files"
 
 # diff the two lists
 diff "$present_files" "$manifest_files" | grep '<' | cut -c 2- > "$diff_result"
 
 if [ -s "$diff_result" ]
 then
-	echo "ARNING! some files will not be included in the archive."
+	echo "WARNING! some files will not be included in the archive."
 	echo "Add them in MANIFEST"
 	cat "$diff_result"
 	echo
@@ -64,20 +64,20 @@ rm "$present_files" "$manifest_files" "$diff_result"
 # create the temporary directory
 mkdir "$dir"
 
-for i in $(cat MANIFEST)
+while read -r LINE
 do
-	if [ $(echo $i | grep /) ]
+	if echo "$LINE" | grep -q /
 	then
-		idir=$dir/${i%/*}
+		idir=$dir/${LINE%/*}
 		if [ ! -d "$idir" ]
 		then
 			echo "mkdir -p $idir"
 			mkdir -p "$idir"
 		fi
 	fi
-	echo "cp $i $dir/$i"
-	cp -a "$i" "$dir/$i"
-done
+	echo "cp $LINE $dir/$LINE"
+	cp -a "$LINE" "$dir/$LINE"
+done < MANIFEST
 
 tar cjvf ../"$dir".tar.bz2 "$dir"
 rm -r "$dir"
