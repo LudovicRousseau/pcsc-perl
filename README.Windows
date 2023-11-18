@@ -1,7 +1,0 @@
-
-Remarks for Windows users:
-
-Status behaves different on Unix and from Win32
-	it returns the Atr len
-	it does not return any error like
-
