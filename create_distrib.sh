@@ -52,6 +52,7 @@ diff "$present_files" "$manifest_files" | grep '<' | cut -c 2- > "$diff_result"
 
 if [ -s "$diff_result" ]
 then
+	echo 
 	echo "WARNING! some files will not be included in the archive."
 	echo "Add them in MANIFEST"
 	cat "$diff_result"
