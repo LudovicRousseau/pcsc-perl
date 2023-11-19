@@ -1,0 +1,14 @@
+Card/MYMETA.json
+Card/MYMETA.yml
+Card/Makefile
+Card/Makefile.old
+Card/pm_to_blib
+MYMETA.json
+MYMETA.yml
+Makefile
+Makefile.old
+PCSC.bs
+PCSC.c
+PCSC.o
+blib/
+pm_to_blib
