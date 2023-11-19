@@ -33,10 +33,18 @@ print "INC: $inc\n";
 WriteMakefile(
     'NAME'      => 'Chipcard::PCSC',
     'VERSION_FROM' => 'PCSC.pm', # finds $VERSION
+    AUTHOR => ['Ludovic ROUSSEAU <ludovic.rousseau@free.fr>', 'Lionel VICTOR'],
+    ABSTRACT => 'Communicate with a smart card using PC/SC from a Perl script',
+    LICENSE => 'gpl_2',
     'LIBS'      => [''],   # e.g., '-lm'
     'LDDLFLAGS' => $lddflags,
     'DEFINE'    => '-O2 -Wall',     # e.g., '-DHAVE_SOMETHING'
     'INC'       => $inc,
     'PL_FILES'  => {},
+    META_MERGE => {
+        resources => {
+            homepage => 'https://pcsc-perl.apdu.fr/',
+        }
+    }
 );
 
