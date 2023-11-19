@@ -19,3 +19,4 @@ test.pl
 test/single_reader.pl
 t/test.t
 typemap
+META.json
