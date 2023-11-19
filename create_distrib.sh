@@ -32,6 +32,10 @@ fi
 # generate Changelog
 #/usr/share/cvs/contrib/rcs2log > Changelog
 
+# generate META.json
+perl Makefile.PL
+cp MYMETA.json META.json
+
 present_files=$(mktemp)
 manifest_files=$(mktemp)
 diff_result=$(mktemp)
