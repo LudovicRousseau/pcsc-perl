@@ -48,7 +48,7 @@ use vars       qw($VERSION @ISA @EXPORT);
 @EXPORT = qw(
 
 );
-$VERSION = '0.05';
+$VERSION = 'v1.4.16';
 
 bootstrap Chipcard::PCSC $VERSION;
 

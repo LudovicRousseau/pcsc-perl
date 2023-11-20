@@ -68,6 +68,9 @@ Licences:
 History:
 ========
 
+1.4.16 - 20 November 2023, Ludovic ROUSSEAU
+    - provide a META.json file to comply with CPAN::Meta::Spec
+
 1.4.15 - 18 November 2023, Ludovic ROUSSEAU
     - add support of SCARD_W_SECURITY_VIOLATION error code
 
